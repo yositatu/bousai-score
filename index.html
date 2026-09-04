@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ぼうさいスコア | 防災診断</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#f5f7fa;color:#17202a}
+header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 20px}
+.wrap{max-width:900px;margin:auto}
+.brand{font-weight:800;font-size:20px}
+.hero{padding:42px 20px 24px;text-align:center}
+.hero h1{font-size:32px;margin:0 0 10px}
+.hero p{color:#64748b}
+.search{display:flex;gap:10px;max-width:700px;margin:22px auto}
+.search input{flex:1;padding:15px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+.btn{border:0;border-radius:12px;padding:15px 22px;font-weight:700;background:#0f766e;color:white}
+main{padding:0 20px 50px}
+.card{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:24px;margin:16px 0;box-shadow:0 4px 18px #00000008}
+.hidden{display:none}
+.score{text-align:center}
+.circle{width:150px;height:150px;border-radius:50%;border:14px solid #f59e0b;display:grid;place-items:center;margin:8px auto 18px}
+.num{font-size:46px;font-weight:900}
+.label{font-weight:800;color:#b45309}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.risk{border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+.risk b{font-size:24px}
+.bar{height:8px;background:#e5e7eb;border-radius:99px;margin-top:10px;overflow:hidden}
+.fill{height:100%;background:#f59e0b;border-radius:99px}
+.alert{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:16px;margin-top:16px}
+.goods{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.good{padding:16px;border:1px solid #e2e8f0;border-radius:14px}
+.good strong{display:block;margin-bottom:5px}
+small{color:#64748b}
+@media(max-width:650px){
+.hero h1{font-size:26px}
+.search{flex-direction:column}
+.btn{height:50px}
+.grid{grid-template-columns:repeat(2,1fr)}
+.goods{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+<div class="wrap brand">🛡️ ぼうさいスコア</div>
+</header>
+
+<section class="hero">
+<div class="wrap">
+<h1>あなたの住所の
