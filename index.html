@@ -1,53 +1,380 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ぼうさいスコア | 防災診断</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;background:#f5f7fa;color:#17202a}
-header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 20px}
-.wrap{max-width:900px;margin:auto}
-.brand{font-weight:800;font-size:20px}
-.hero{padding:42px 20px 24px;text-align:center}
-.hero h1{font-size:32px;margin:0 0 10px}
-.hero p{color:#64748b}
-.search{display:flex;gap:10px;max-width:700px;margin:22px auto}
-.search input{flex:1;padding:15px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
-.btn{border:0;border-radius:12px;padding:15px 22px;font-weight:700;background:#0f766e;color:white}
-main{padding:0 20px 50px}
-.card{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:24px;margin:16px 0;box-shadow:0 4px 18px #00000008}
-.hidden{display:none}
-.score{text-align:center}
-.circle{width:150px;height:150px;border-radius:50%;border:14px solid #f59e0b;display:grid;place-items:center;margin:8px auto 18px}
-.num{font-size:46px;font-weight:900}
-.label{font-weight:800;color:#b45309}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.risk{border:1px solid #e5e7eb;border-radius:14px;padding:16px}
-.risk b{font-size:24px}
-.bar{height:8px;background:#e5e7eb;border-radius:99px;margin-top:10px;overflow:hidden}
-.fill{height:100%;background:#f59e0b;border-radius:99px}
-.alert{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:16px;margin-top:16px}
-.goods{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.good{padding:16px;border:1px solid #e2e8f0;border-radius:14px}
-.good strong{display:block;margin-bottom:5px}
-small{color:#64748b}
-@media(max-width:650px){
-.hero h1{font-size:26px}
-.search{flex-direction:column}
-.btn{height:50px}
-.grid{grid-template-columns:repeat(2,1fr)}
-.goods{grid-template-columns:1fr}
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ぼうさいスコア｜住所から防災診断</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
+      background:#f5f7fa;
+      color:#1f2937;
+    }
+    header{
+      background:#fff;
+      border-bottom:1px solid #e5e7eb;
+      padding:18px 20px;
+    }
+    .wrap{
+      max-width:900px;
+      margin:auto;
+    }
+    .brand{
+      font-size:22px;
+      font-weight:800;
+    }
+    .hero{
+      padding:42px 20px 24px;
+      text-align:center;
+    }
+    .hero h1{
+      font-size:32px;
+      margin:0 0 10px;
+    }
+    .hero p{
+      color:#64748b;
+      line-height:1.7;
+    }
+    .search{
+      display:flex;
+      gap:10px;
+      max-width:700px;
+      margin:24px auto 0;
+    }
+    .search input{
+      flex:1;
+      padding:16px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      font-size:16px;
+    }
+    .btn{
+      border:0;
+      border-radius:12px;
+      padding:15px 22px;
+      font-weight:700;
+      font-size:16px;
+      background:#0f766e;
+      color:white;
+      cursor:pointer;
+    }
+    main{
+      padding:0 20px 50px;
+    }
+    .card{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:18px;
+      padding:24px;
+      margin:16px 0;
+      box-shadow:0 4px 18px rgba(0,0,0,.04);
+    }
+    .hidden{
+      display:none;
+    }
+    .score-area{
+      text-align:center;
+    }
+    .circle{
+      width:160px;
+      height:160px;
+      border-radius:50%;
+      border:14px solid #dbeafe;
+      display:grid;
+      place-items:center;
+      margin:16px auto;
+      background:#fff;
+    }
+    .num{
+      font-size:48px;
+      font-weight:900;
+    }
+    .label{
+      font-weight:800;
+      font-size:18px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    .risk{
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px;
+    }
+    .risk b{
+      font-size:18px;
+    }
+    .bar{
+      height:9px;
+      background:#e5e7eb;
+      border-radius:999px;
+      margin-top:10px;
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      background:#f59e0b;
+      border-radius:999px;
+    }
+    .alert{
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      border-radius:14px;
+      padding:16px;
+      margin-top:16px;
+    }
+    .goods{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    .good{
+      padding:16px;
+      border:1px solid #e2e8f0;
+      border-radius:14px;
+    }
+    .good strong{
+      display:block;
+      margin-bottom:5px;
+    }
+    small{
+      color:#64748b;
+      line-height:1.6;
+    }
+    footer{
+      padding:30px 20px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:13px;
+    }
+
+    @media(max-width:650px){
+      .hero h1{font-size:27px}
+      .search{flex-direction:column}
+      .btn{height:52px}
+      .grid{grid-template-columns:1fr}
+      .goods{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 
 <body>
+
 <header>
-<div class="wrap brand">🛡️ ぼうさいスコア</div>
+  <div class="wrap brand">🛡️ ぼうさいスコア</div>
 </header>
 
 <section class="hero">
-<div class="wrap">
-<h1>あなたの住所の
+  <div class="wrap">
+    <h1>あなたの住所の<br>防災力をチェック</h1>
+    <p>
+      住所を入力すると、防災スコアと災害リスク、<br>
+      あなたに必要な防災グッズを簡単に診断します。
+    </p>
+
+    <div class="search">
+      <input
+        id="address"
+        type="text"
+        placeholder="例：東京都新宿区西新宿"
+      >
+      <button class="btn" onclick="diagnose()">無料で診断する</button>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <section id="result" class="hidden">
+
+    <div class="card score-area">
+      <div class="label">あなたの防災スコア</div>
+
+      <div class="circle">
+        <div>
+          <div id="score" class="num">--</div>
+          <div>/ 100</div>
+        </div>
+      </div>
+
+      <h2 id="grade"></h2>
+      <p id="addressResult"></p>
+    </div>
+
+    <div class="card">
+      <h2>想定される災害リスク</h2>
+
+      <div class="grid">
+
+        <div class="risk">
+          <b>🌊 水害</b>
+          <p id="floodText"></p>
+          <div class="bar">
+            <div id="floodBar" class="fill"></div>
+          </div>
+        </div>
+
+        <div class="risk">
+          <b>⛰️ 土砂災害</b>
+          <p id="landText"></p>
+          <div class="bar">
+            <div id="landBar" class="fill"></div>
+          </div>
+        </div>
+
+        <div class="risk">
+          <b>🏠 地震</b>
+          <p id="quakeText"></p>
+          <div class="bar">
+            <div id="quakeBar" class="fill"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="alert">
+        ⚠️ この診断は現在デモ版です。正式版では国や自治体のハザードマップ等の公的データと連携する想定です。
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>あなたにおすすめの防災グッズ</h2>
+
+      <div class="goods">
+
+        <div class="good">
+          <strong>💧 保存水</strong>
+          <small>最低3日分、できれば7日分を準備。</small>
+        </div>
+
+        <div class="good">
+          <strong>🥫 非常食</strong>
+          <small>火を使わなくても食べられる食品がおすすめ。</small>
+        </div>
+
+        <div class="good">
+          <strong>🔋 モバイルバッテリー</strong>
+          <small>停電時のスマートフォン充電に。</small>
+        </div>
+
+        <div class="good">
+          <strong>🚽 携帯トイレ</strong>
+          <small>断水時に重要。人数×日数分を用意。</small>
+        </div>
+
+        <div class="good">
+          <strong>🔦 LEDライト</strong>
+          <small>停電時の必需品。予備電池も忘れずに。</small>
+        </div>
+
+        <div class="good">
+          <strong>🎒 防災リュック</strong>
+          <small>避難時に必要な用品をひとまとめに。</small>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  ぼうさいスコア β版<br>
+  ※現在は試作版です。実際の避難判断には自治体等の公的情報をご確認ください。
+</footer>
+
+<script>
+
+function hashAddress(text){
+  let hash = 0;
+  for(let i=0;i<text.length;i++){
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function riskLabel(value){
+  if(value >= 70) return "高い";
+  if(value >= 40) return "やや高い";
+  return "低め";
+}
+
+function diagnose(){
+
+  const address =
+    document.getElementById("address").value.trim();
+
+  if(!address){
+    alert("住所を入力してください");
+    return;
+  }
+
+  const h = hashAddress(address);
+
+  const flood = 25 + (h % 65);
+  const land = 15 + ((h >> 3) % 70);
+  const quake = 45 + ((h >> 5) % 50);
+
+  const average =
+    (flood + land + quake) / 3;
+
+  let score =
+    Math.round(100 - average * 0.55);
+
+  if(score < 30) score = 30;
+  if(score > 92) score = 92;
+
+  document.getElementById("score").textContent = score;
+
+  let grade;
+
+  if(score >= 80){
+    grade = "🟢 比較的安心";
+  }else if(score >= 60){
+    grade = "🟡 防災対策を確認しましょう";
+  }else{
+    grade = "🔴 防災対策を強化しましょう";
+  }
+
+  document.getElementById("grade").textContent = grade;
+
+  document.getElementById("addressResult").textContent =
+    "診断住所：" + address;
+
+  document.getElementById("floodText").textContent =
+    riskLabel(flood);
+
+  document.getElementById("landText").textContent =
+    riskLabel(land);
+
+  document.getElementById("quakeText").textContent =
+    riskLabel(quake);
+
+  document.getElementById("floodBar").style.width =
+    flood + "%";
+
+  document.getElementById("landBar").style.width =
+    land + "%";
+
+  document.getElementById("quakeBar").style.width =
+    quake + "%";
+
+  document.getElementById("result")
+    .classList.remove("hidden");
+
+  document.getElementById("result")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+}
+
+</script>
+
+</body>
+  </html>
