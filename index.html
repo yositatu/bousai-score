@@ -7,11 +7,6 @@
 <title>ぼうさいスコア｜総合防災診断</title>
 
 <style>
-
-/* ================================
-   基本設定
-================================ */
-
 *{
   box-sizing:border-box;
 }
@@ -28,7 +23,6 @@ body{
     "Segoe UI",
     "Noto Sans JP",
     sans-serif;
-
   background:#f4f7f9;
   color:#1f2937;
   line-height:1.6;
@@ -43,11 +37,6 @@ a{
   color:inherit;
 }
 
-
-/* ================================
-   共通
-================================ */
-
 .wrap{
   width:min(920px, calc(100% - 32px));
   margin:0 auto;
@@ -57,10 +46,7 @@ a{
   display:none;
 }
 
-
-/* ================================
-   ヘッダー
-================================ */
+/* ヘッダー */
 
 header{
   background:#ffffff;
@@ -74,16 +60,11 @@ header{
 }
 
 .logo{
-  margin:0;
   font-size:21px;
   font-weight:800;
-  letter-spacing:.02em;
 }
 
-
-/* ================================
-   メイン入力エリア
-================================ */
+/* 入力エリア */
 
 .hero{
   padding:46px 0 34px;
@@ -99,7 +80,6 @@ header{
 .heroText{
   margin:0;
   color:#64748b;
-  font-size:16px;
 }
 
 .searchBox{
@@ -116,7 +96,6 @@ header{
   border:1px solid #cbd5e1;
   border-radius:12px;
   background:#ffffff;
-  color:#111827;
   font-size:16px;
   outline:none;
 }
@@ -133,20 +112,15 @@ header{
   min-height:54px;
   background:#0f766e;
   color:#ffffff;
-  font-size:16px;
   font-weight:800;
   cursor:pointer;
 }
 
 .mainButton:disabled{
   opacity:.6;
-  cursor:default;
 }
 
-
-/* ================================
-   カード
-================================ */
+/* カード */
 
 main{
   padding-bottom:55px;
@@ -171,27 +145,18 @@ main{
   font-size:14px;
 }
 
-
-/* ================================
-   総合スコア
-================================ */
+/* 総合スコア */
 
 .totalCard{
   text-align:center;
-}
-
-.totalCard h2{
-  margin-top:0;
 }
 
 .scoreCircle{
   width:170px;
   height:170px;
   margin:18px auto;
-
   border:14px solid #dbeafe;
   border-radius:50%;
-
   display:flex;
   align-items:center;
   justify-content:center;
@@ -213,36 +178,19 @@ main{
   font-size:22px;
 }
 
-#foundAddress{
-  margin:18px 0 3px;
-  font-weight:700;
-}
-
-#coords{
-  margin:0;
-}
-
-
-/* ================================
-   4災害
-================================ */
+/* 災害カード */
 
 .riskGrid{
   margin-top:20px;
-
   display:grid;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:15px;
 }
 
 .riskCard{
   padding:20px;
-
   border:1px solid #e5e7eb;
   border-radius:16px;
-
   background:#ffffff;
 }
 
@@ -278,10 +226,8 @@ main{
   width:100%;
   height:10px;
   margin:9px 0 12px;
-
   background:#e5e7eb;
   border-radius:999px;
-
   overflow:hidden;
 }
 
@@ -305,80 +251,41 @@ main{
   line-height:1.55;
 }
 
-
-/* ================================
-   ハザードマップリンク
-================================ */
-
 .mapLink{
   display:block;
-
   margin-top:14px;
   padding:11px 12px;
-
   border-radius:11px;
-
   background:#eef2ff;
   color:#3730a3;
-
   text-align:center;
   text-decoration:none;
   font-size:14px;
   font-weight:800;
 }
 
-
-/* ================================
-   説明
-================================ */
-
 .infoBox{
   margin-top:20px;
   padding:17px;
-
   background:#eff6ff;
   border:1px solid #bfdbfe;
   border-radius:14px;
-
   font-size:14px;
 }
 
-.infoBox strong{
-  font-size:15px;
-}
-
-.warningBox{
-  margin-top:14px;
-  padding:17px;
-
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  border-radius:14px;
-
-  font-size:14px;
-}
-
-
-/* ================================
-   おすすめ防災グッズ
-================================ */
+/* 防災グッズ */
 
 .goodsGrid{
   margin-top:16px;
-
   display:grid;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
 }
 
 .goodItem{
   padding:16px;
-
   border:1px solid #e2e8f0;
   border-radius:14px;
-
   background:#ffffff;
 }
 
@@ -392,28 +299,15 @@ main{
   font-size:13px;
 }
 
-
-/* ================================
-   フッター
-================================ */
-
 footer{
   padding:32px 20px 40px;
-
   text-align:center;
-
   color:#94a3b8;
   font-size:12px;
   line-height:1.8;
 }
 
-
-/* ================================
-   スマホ
-================================ */
-
 @media(max-width:680px){
-
   .hero{
     padding-top:34px;
   }
@@ -426,10 +320,7 @@ footer{
     width:100%;
   }
 
-  .riskGrid{
-    grid-template-columns:1fr;
-  }
-
+  .riskGrid,
   .goodsGrid{
     grid-template-columns:1fr;
   }
@@ -437,53 +328,29 @@ footer{
   .card{
     padding:19px;
   }
-
 }
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- ================================
-     ヘッダー
-================================ -->
-
 <header>
-
   <div class="wrap headerInner">
-
-    <div class="logo">
-      🛡️ ぼうさいスコア
-    </div>
-
+    <div class="logo">🛡️ ぼうさいスコア</div>
   </div>
-
 </header>
 
-
-<!-- ================================
-     住所入力
-================================ -->
-
 <section class="hero">
-
   <div class="wrap">
 
-    <h1>
-      住所から4つの災害リスクを診断
-    </h1>
+    <h1>住所から4つの災害リスクを診断</h1>
 
     <p class="heroText">
       地震・洪水・土砂災害・津波を<br>
       それぞれ公的データをもとに評価します。
     </p>
 
-
     <div class="searchBox">
-
       <input
         id="address"
         type="text"
@@ -495,83 +362,39 @@ footer{
         id="btn"
         class="mainButton"
         type="button"
-        onclick="diagnose()"
       >
         無料で診断する
       </button>
-
     </div>
 
   </div>
-
 </section>
-
-
-<!-- ================================
-     診断結果
-================================ -->
 
 <main class="wrap">
 
-<section
-  id="result"
-  class="hidden"
->
-
-
-<!-- 総合スコア -->
+<section id="result" class="hidden">
 
 <div class="card totalCard">
 
-  <h2>
-    総合防災スコア
-  </h2>
+  <h2>総合防災スコア</h2>
 
   <div class="scoreCircle">
-
     <div>
-
-      <div
-        id="totalScore"
-        class="totalNumber"
-      >
-        --
-      </div>
-
-      <div class="totalUnit">
-        /100
-      </div>
-
+      <div id="totalScore" class="totalNumber">--</div>
+      <div class="totalUnit">/100</div>
     </div>
-
   </div>
 
-
-  <h3 id="totalGrade">
-    診断前
-  </h3>
-
+  <h3 id="totalGrade">診断前</h3>
 
   <p>
-    <strong>
-      100に近いほど総合的な安心度が高い
-    </strong>
+    <strong>100に近いほど総合的な安心度が高い</strong>
   </p>
 
-
   <p id="foundAddress"></p>
-
-  <p
-    id="coords"
-    class="meta"
-  ></p>
+  <p id="coords" class="meta"></p>
 
 </div>
-
-
-<!-- ================================
-     個別リスク
-================================ -->
 
 <div class="card">
 
@@ -581,447 +404,189 @@ footer{
 
   <p class="meta">
     個別リスクスコアは
-    <strong>
-      100に近いほど危険
-    </strong>
+    <strong>100に近いほど危険</strong>
     です。
   </p>
 
-
   <div class="riskGrid">
 
-
-    <!-- 地震 -->
-
     <article class="riskCard">
-
-      <h3>
-        🏠 地震
-      </h3>
+      <h3>🏠 地震</h3>
 
       <div class="scoreLine">
-
-        <span
-          id="quakeScore"
-          class="riskScore"
-        >
-          --
-        </span>
-
-        <span class="scoreUnit">
-          /100
-        </span>
-
+        <span id="quakeScore" class="riskScore">--</span>
+        <span class="scoreUnit">/100</span>
       </div>
 
-
-      <div
-        id="quakeLabel"
-        class="riskLabel"
-      >
-        診断前
-      </div>
-
+      <div id="quakeLabel" class="riskLabel">診断前</div>
 
       <div class="bar">
-
-        <div
-          id="quakeBar"
-          class="fill"
-        ></div>
-
+        <div id="quakeBar" class="fill"></div>
       </div>
 
-
-      <p
-        id="quakeDetail"
-        class="detail"
-      >
+      <p id="quakeDetail" class="detail">
         住所を入力して診断してください。
       </p>
-
 
       <span class="sourceText">
         J-SHISの地震ハザード情報を使用
       </span>
-
     </article>
 
-
-    <!-- 洪水 -->
-
     <article class="riskCard">
-
-      <h3>
-        🌊 洪水
-      </h3>
+      <h3>🌊 洪水</h3>
 
       <div class="scoreLine">
-
-        <span
-          id="floodScore"
-          class="riskScore"
-        >
-          --
-        </span>
-
-        <span class="scoreUnit">
-          /100
-        </span>
-
+        <span id="floodScore" class="riskScore">--</span>
+        <span class="scoreUnit">/100</span>
       </div>
 
-
-      <div
-        id="floodLabel"
-        class="riskLabel"
-      >
-        診断前
-      </div>
-
+      <div id="floodLabel" class="riskLabel">診断前</div>
 
       <div class="bar">
-
-        <div
-          id="floodBar"
-          class="fill"
-        ></div>
-
+        <div id="floodBar" class="fill"></div>
       </div>
 
-
-      <p
-        id="floodDetail"
-        class="detail"
-      >
+      <p id="floodDetail" class="detail">
         住所を入力して診断してください。
       </p>
-
 
       <span class="sourceText">
         洪水浸水想定区域を参照
       </span>
 
-
       <a
         id="floodMap"
         class="mapLink"
-        href="https://disaportal.gsi.go.jp/maps/"
         target="_blank"
         rel="noopener noreferrer"
       >
         🗺️ 公式ハザードマップで確認
       </a>
-
     </article>
 
-
-    <!-- 土砂災害 -->
-
     <article class="riskCard">
-
-      <h3>
-        ⛰️ 土砂災害
-      </h3>
+      <h3>⛰️ 土砂災害</h3>
 
       <div class="scoreLine">
-
-        <span
-          id="landScore"
-          class="riskScore"
-        >
-          --
-        </span>
-
-        <span class="scoreUnit">
-          /100
-        </span>
-
+        <span id="landScore" class="riskScore">--</span>
+        <span class="scoreUnit">/100</span>
       </div>
 
-
-      <div
-        id="landLabel"
-        class="riskLabel"
-      >
-        診断前
-      </div>
-
+      <div id="landLabel" class="riskLabel">診断前</div>
 
       <div class="bar">
-
-        <div
-          id="landBar"
-          class="fill"
-        ></div>
-
+        <div id="landBar" class="fill"></div>
       </div>
 
-
-      <p
-        id="landDetail"
-        class="detail"
-      >
+      <p id="landDetail" class="detail">
         住所を入力して診断してください。
       </p>
 
-
       <span class="sourceText">
-        土石流・急傾斜地・地すべり等を参照
+        土石流・急傾斜地・地すべりを参照
       </span>
-
 
       <a
         id="landMap"
         class="mapLink"
-        href="https://disaportal.gsi.go.jp/maps/"
         target="_blank"
         rel="noopener noreferrer"
       >
         🗺️ 公式ハザードマップで確認
       </a>
-
     </article>
 
-
-    <!-- 津波 -->
-
     <article class="riskCard">
-
-      <h3>
-        🌊 津波
-      </h3>
+      <h3>🌊 津波</h3>
 
       <div class="scoreLine">
-
-        <span
-          id="tsunamiScore"
-          class="riskScore"
-        >
-          --
-        </span>
-
-        <span class="scoreUnit">
-          /100
-        </span>
-
+        <span id="tsunamiScore" class="riskScore">--</span>
+        <span class="scoreUnit">/100</span>
       </div>
 
-
-      <div
-        id="tsunamiLabel"
-        class="riskLabel"
-      >
-        診断前
-      </div>
-
+      <div id="tsunamiLabel" class="riskLabel">診断前</div>
 
       <div class="bar">
-
-        <div
-          id="tsunamiBar"
-          class="fill"
-        ></div>
-
+        <div id="tsunamiBar" class="fill"></div>
       </div>
 
-
-      <p
-        id="tsunamiDetail"
-        class="detail"
-      >
+      <p id="tsunamiDetail" class="detail">
         住所を入力して診断してください。
       </p>
-
 
       <span class="sourceText">
         津波浸水想定区域を参照
       </span>
 
-
       <a
         id="tsunamiMap"
         class="mapLink"
-        href="https://disaportal.gsi.go.jp/maps/"
         target="_blank"
         rel="noopener noreferrer"
       >
         🗺️ 公式ハザードマップで確認
       </a>
-
     </article>
 
-
   </div>
-
-
-  <!-- スコア説明 -->
 
   <div class="infoBox">
-
-    <strong>
-      スコアの考え方
-    </strong>
-
-    <br><br>
-
-    🏠 地震：
-    30年以内に強い揺れに見舞われる確率
-
-    <br>
-
-    🌊 洪水：
-    洪水浸水想定区域と想定浸水深
-
-    <br>
-
-    ⛰️ 土砂災害：
-    土砂災害警戒区域等への該当状況
-
-    <br>
-
-    🌊 津波：
-    津波浸水想定区域と想定浸水深
-
-    <br><br>
-
-    <strong>
-      個別リスクは高いほど危険
-    </strong>
-
-    <br>
-
-    0〜24：低い
-
-    <br>
-
-    25〜49：やや低い
-
-    <br>
-
-    50〜79：注意
-
-    <br>
-
-    80〜100：高い
-
-  </div>
-
-
-  <div class="warningBox">
-
-    ⚠️ この診断は公的な防災情報を利用した
-    β版の参考評価です。
-
-    <br>
-
-    実際の避難判断では、
-    自治体・気象庁などの最新情報を
-    必ず確認してください。
-
+    <strong>判定について</strong><br>
+    ハザード区域の着色がない地点と、
+    公的データそのものを取得できなかった場合を区別して判定します。
   </div>
 
 </div>
-
-
-<!-- ================================
-     防災グッズ
-================================ -->
 
 <div class="card">
-
   <h2 class="cardTitle">
-    あなたの住所におすすめの防災グッズ
+    あなたの住所に合わせた防災グッズ
   </h2>
 
-  <p class="meta">
-    診断された災害リスクに合わせて
-    優先度の高い備えを表示します。
-  </p>
-
-  <div
-    id="goods"
-    class="goodsGrid"
-  >
-  </div>
-
+  <div id="goods" class="goodsGrid"></div>
 </div>
 
-
 </section>
-
 </main>
 
-
-<!-- ================================
-     フッター
-================================ -->
-
 <footer>
-
-  ぼうさいスコア β版
-
-  <br><br>
-
-  住所検索：国土地理院
-
-  <br>
-
-  地震：J-SHIS
-
-  <br>
-
-  洪水・土砂災害・津波：
-
-  <br>
-
-  ハザードマップポータルサイト
-
-  <br><br>
-
-  ※本サービスは防災情報の補助を目的とした
-  試作版です。
-
-  <br>
-
-  実際の避難判断には自治体等の
-  最新情報をご確認ください。
-
+  住所検索：国土地理院<br>
+  地震：J-SHIS<br>
+  洪水・土砂災害・津波：ハザードマップポータル
 </footer>
 
+<script>
 
-<!--
-====================================
-ここから下に「第2/3」を貼ります。
-まだ </body> と </html> は書きません。
-====================================
--->
+const $ = id => document.getElementById(id);
 
-  <script>
-
-/* ==================================================
-   ぼうさいスコア
-   第2/3
-   4災害データ取得・判定エンジン
-================================================== */
-
-const $ = (id) => document.getElementById(id);
-
-
-/* ==================================================
-   共通設定
-================================================== */
-
-const TILE_ZOOM = 17;
-
-const DISAPORTAL_RASTER =
+const TILE_BASE =
   "https://disaportaldata.gsi.go.jp/raster/";
 
+const PREFS = {
+  "北海道":"01","青森県":"02","岩手県":"03","宮城県":"04",
+  "秋田県":"05","山形県":"06","福島県":"07","茨城県":"08",
+  "栃木県":"09","群馬県":"10","埼玉県":"11","千葉県":"12",
+  "東京都":"13","神奈川県":"14","新潟県":"15","富山県":"16",
+  "石川県":"17","福井県":"18","山梨県":"19","長野県":"20",
+  "岐阜県":"21","静岡県":"22","愛知県":"23","三重県":"24",
+  "滋賀県":"25","京都府":"26","大阪府":"27","兵庫県":"28",
+  "奈良県":"29","和歌山県":"30","鳥取県":"31","島根県":"32",
+  "岡山県":"33","広島県":"34","山口県":"35","徳島県":"36",
+  "香川県":"37","愛媛県":"38","高知県":"39","福岡県":"40",
+  "佐賀県":"41","長崎県":"42","熊本県":"43","大分県":"44",
+  "宮崎県":"45","鹿児島県":"46","沖縄県":"47"
+};
 
-/* ==================================================
-   住所 → 緯度経度
-   国土地理院 住所検索
-================================================== */
+function prefCode(text){
+  for(const [name,code] of Object.entries(PREFS)){
+    if(text.includes(name)){
+      return code;
+    }
+  }
+
+  return null;
+}
 
 async function geocode(address){
 
@@ -1032,52 +597,25 @@ async function geocode(address){
   const response = await fetch(url);
 
   if(!response.ok){
-    throw new Error(
-      "住所検索データを取得できませんでした"
-    );
+    throw new Error("住所検索に失敗しました");
   }
 
   const data = await response.json();
 
-  if(!Array.isArray(data) || data.length === 0){
-    throw new Error(
-      "住所が見つかりませんでした"
-    );
+  if(!data.length){
+    throw new Error("住所が見つかりません");
   }
 
   const item = data[0];
 
-  const lon =
-    Number(item.geometry.coordinates[0]);
-
-  const lat =
-    Number(item.geometry.coordinates[1]);
-
-  if(
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lon)
-  ){
-    throw new Error(
-      "緯度経度を取得できませんでした"
-    );
-  }
-
-  return{
-    lat,
-    lon,
-    title:
-      item.properties?.title || address
+  return {
+    lon:Number(item.geometry.coordinates[0]),
+    lat:Number(item.geometry.coordinates[1]),
+    title:item.properties.title || address
   };
 }
 
-
-/* ==================================================
-   地震
-   J-SHIS
-   30年以内に震度6弱以上となる確率
-================================================== */
-
-async function quakeRisk(lat, lon){
+async function quakeRisk(lat,lon){
 
   const url =
     "https://www.j-shis.bosai.go.jp/map/api/"
@@ -1091,361 +629,324 @@ async function quakeRisk(lat, lon){
   const response = await fetch(url);
 
   if(!response.ok){
-    throw new Error(
-      "J-SHISデータ取得失敗"
-    );
+    throw new Error("地震データ取得失敗");
   }
 
   const json = await response.json();
 
   const raw =
-    json?.features?.[0]
-      ?.properties
-      ?.T30_I55_PS;
+    json?.features?.[0]?.properties?.T30_I55_PS;
 
-  const probability =
-    Number(raw) * 100;
+  const probability = Number(raw) * 100;
 
   if(!Number.isFinite(probability)){
-    throw new Error(
-      "地震確率を取得できません"
-    );
+    throw new Error("地震データなし");
   }
-
-
-  /*
-    地震リスクスコア
-
-    100に近いほど危険
-  */
 
   let risk;
 
   if(probability < 3){
-
     risk = 15;
-
-  }else if(probability < 6){
-
+  }
+  else if(probability < 6){
     risk = 30;
-
-  }else if(probability < 26){
-
+  }
+  else if(probability < 26){
     risk = 55;
-
-  }else if(probability < 50){
-
+  }
+  else if(probability < 50){
     risk = 75;
-
-  }else{
-
+  }
+  else{
     risk = 95;
   }
 
-
-  return{
-
+  return {
     risk,
-
     detail:
       "30年以内に震度6弱以上：約"
       + probability.toFixed(1)
       + "%"
-
   };
 }
+   function tilePosition(lat,lon,z){
 
-
-/* ==================================================
-   XYZタイル計算
-================================================== */
-
-function tilePosition(lat, lon, zoom){
-
-  const n =
-    Math.pow(2, zoom);
+  const n = 2 ** z;
 
   const x =
     (lon + 180) / 360 * n;
 
-  const latRad =
+  const rad =
     lat * Math.PI / 180;
 
   const y =
     (
       1 -
       Math.log(
-        Math.tan(latRad)
-        + 1 / Math.cos(latRad)
+        Math.tan(rad) +
+        1 / Math.cos(rad)
       ) / Math.PI
     ) / 2 * n;
 
+  const tileX =
+    Math.floor(x);
 
-  return{
+  const tileY =
+    Math.floor(y);
 
-    tileX:
-      Math.floor(x),
+  const px =
+    Math.floor(
+      (x - tileX) * 256
+    );
 
-    tileY:
-      Math.floor(y),
+  const py =
+    Math.floor(
+      (y - tileY) * 256
+    );
 
-    pixelX:
-      Math.max(
-        0,
-        Math.min(
-          255,
-          Math.floor(
-            (x - Math.floor(x)) * 256
-          )
-        )
-      ),
-
-    pixelY:
-      Math.max(
-        0,
-        Math.min(
-          255,
-          Math.floor(
-            (y - Math.floor(y)) * 256
-          )
-        )
-      )
-
+  return {
+    x:tileX,
+    y:tileY,
+    px,
+    py
   };
 }
 
 
-/* ==================================================
-   タイル画像を取得
-================================================== */
+/* =================================
+   タイル取得
 
-function loadImage(url){
+   重要：
+   404 と通信エラーを区別する
+================================= */
 
-  return new Promise(
-    (resolve, reject) => {
-
-      const img =
-        new Image();
-
-      img.crossOrigin =
-        "anonymous";
-
-      img.onload = () => {
-
-        if(
-          img.naturalWidth === 0 ||
-          img.naturalHeight === 0
-        ){
-
-          reject(
-            new Error(
-              "空のタイル"
-            )
-          );
-
-          return;
-        }
-
-        resolve(img);
-      };
-
-
-      img.onerror = () => {
-
-        reject(
-          new Error(
-            "タイル画像取得失敗"
-          )
-        );
-
-      };
-
-
-      img.src = url;
-
-    }
-  );
-}
-
-
-/* ==================================================
-   1地点だけでなく周囲も読む
-
-   境界線・道路・アンチエイリアス等の
-   影響を減らすため
-   中心点の周囲もサンプリングする。
-================================================== */
-
-function samplePixels(
-  img,
-  pixelX,
-  pixelY
+async function fetchTile(
+  template,
+  lat,
+  lon,
+  z = 17
 ){
 
-  const canvas =
-    document.createElement("canvas");
+  const p =
+    tilePosition(lat,lon,z);
 
-  canvas.width = 256;
-  canvas.height = 256;
+  const url =
+    template
+      .replace("{z}",z)
+      .replace("{x}",p.x)
+      .replace("{y}",p.y);
 
-  const ctx =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently:true
-      }
-    );
+  let response;
 
-  ctx.drawImage(
-    img,
-    0,
-    0,
-    256,
-    256
-  );
+  try{
 
-
-  /*
-    中心＋周囲8地点
-  */
-
-  const offsets = [
-
-    [0,0],
-
-    [-2,0],
-    [2,0],
-
-    [0,-2],
-    [0,2],
-
-    [-2,-2],
-    [2,-2],
-
-    [-2,2],
-    [2,2]
-
-  ];
-
-
-  const pixels = [];
-
-
-  for(const [dx,dy] of offsets){
-
-    const x =
-      Math.max(
-        0,
-        Math.min(
-          255,
-          pixelX + dx
-        )
+    response =
+      await fetch(
+        url,
+        {
+          mode:"cors",
+          cache:"no-store"
+        }
       );
 
-    const y =
-      Math.max(
-        0,
-        Math.min(
-          255,
-          pixelY + dy
-        )
-      );
+  }
+  catch(error){
 
-
-    const data =
-      ctx.getImageData(
-        x,
-        y,
-        1,
-        1
-      ).data;
-
-
-    pixels.push({
-
-      r:data[0],
-
-      g:data[1],
-
-      b:data[2],
-
-      a:data[3]
-
-    });
+    return {
+      status:"error",
+      error
+    };
 
   }
 
 
-  return pixels;
-}
+  /*
+    タイル自体が存在しない場合。
+
+    これは通信障害とは別扱い。
+  */
+
+  if(response.status === 404){
+
+    return {
+      status:"empty",
+      url
+    };
+
+  }
 
 
-/* ==================================================
-   タイルURL → 周辺ピクセル
-================================================== */
+  if(!response.ok){
 
-async function readTilePixels(
-  template,
-  lat,
-  lon,
-  zoom = TILE_ZOOM
-){
+    return {
+      status:"error",
+      httpStatus:response.status,
+      url
+    };
 
-  const pos =
-    tilePosition(
-      lat,
-      lon,
-      zoom
-    );
+  }
 
 
-  const url =
-    template
+  try{
 
-      .replace(
-        "{z}",
-        String(zoom)
-      )
+    const blob =
+      await response.blob();
 
-      .replace(
-        "{x}",
-        String(pos.tileX)
-      )
+    const objectUrl =
+      URL.createObjectURL(blob);
 
-      .replace(
-        "{y}",
-        String(pos.tileY)
+    try{
+
+      const image =
+        await new Promise(
+          (resolve,reject)=>{
+
+            const img =
+              new Image();
+
+            img.onload =
+              ()=>resolve(img);
+
+            img.onerror =
+              ()=>reject(
+                new Error(
+                  "タイル画像変換失敗"
+                )
+              );
+
+            img.src =
+              objectUrl;
+
+          }
+        );
+
+
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+      canvas.width = 256;
+      canvas.height = 256;
+
+
+      const ctx =
+        canvas.getContext(
+          "2d",
+          {
+            willReadFrequently:true
+          }
+        );
+
+
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        256,
+        256
       );
 
 
-  const img =
-    await loadImage(url);
+      /*
+        住所の一点だけだと
+        境界線上で誤判定しやすいので、
+        周囲も少しサンプリングする。
+      */
+
+      const offsets = [
+        [0,0],
+        [-2,0],
+        [2,0],
+        [0,-2],
+        [0,2],
+        [-2,-2],
+        [2,-2],
+        [-2,2],
+        [2,2]
+      ];
 
 
-  const pixels =
-    samplePixels(
-      img,
-      pos.pixelX,
-      pos.pixelY
-    );
+      const pixels = [];
 
 
-  return{
-    pixels,
-    url,
-    zoom
-  };
+      for(
+        const [dx,dy]
+        of offsets
+      ){
+
+        const sx =
+          Math.max(
+            0,
+            Math.min(
+              255,
+              p.px + dx
+            )
+          );
+
+        const sy =
+          Math.max(
+            0,
+            Math.min(
+              255,
+              p.py + dy
+            )
+          );
+
+
+        const d =
+          ctx.getImageData(
+            sx,
+            sy,
+            1,
+            1
+          ).data;
+
+
+        pixels.push({
+          r:d[0],
+          g:d[1],
+          b:d[2],
+          a:d[3]
+        });
+
+      }
+
+
+      return {
+        status:"ok",
+        pixels,
+        url
+      };
+
+    }
+    finally{
+
+      URL.revokeObjectURL(
+        objectUrl
+      );
+
+    }
+
+  }
+  catch(error){
+
+    return {
+      status:"error",
+      error,
+      url
+    };
+
+  }
+
 }
 
 
-/* ==================================================
-   複数ズームで取得
+/* =================================
+   複数ズームで確認
+================================= */
 
-   z17を基本とし、
-   取得不能なら16・15も試す。
-================================================== */
-
-async function readTileWithZoomFallback(
+async function fetchWithZoomFallback(
   template,
   lat,
   lon
@@ -1455,89 +956,93 @@ async function readTileWithZoomFallback(
     [17,16,15];
 
 
-  let lastError = null;
+  let sawEmpty = false;
 
 
-  for(const zoom of zooms){
+  for(const z of zooms){
 
-    try{
-
-      return await readTilePixels(
+    const result =
+      await fetchTile(
         template,
         lat,
         lon,
-        zoom
+        z
       );
 
-    }catch(error){
 
-      lastError = error;
+    if(result.status === "ok"){
+
+      return result;
 
     }
+
+
+    if(result.status === "empty"){
+
+      sawEmpty = true;
+      continue;
+
+    }
+
+
+    /*
+      一つのズームだけの
+      通信失敗では即終了しない。
+    */
 
   }
 
 
-  throw(
-    lastError ||
-    new Error(
-      "タイルを取得できません"
-    )
-  );
+  if(sawEmpty){
+
+    return {
+      status:"empty"
+    };
+
+  }
+
+
+  return {
+    status:"error"
+  };
+
 }
 
 
-/* ==================================================
-   RGB色の距離
-================================================== */
+/* =================================
+   色判定
+================================= */
 
 function colorDistance(
-  pixel,
-  color
+  a,
+  b
 ){
 
   return Math.sqrt(
-
-    Math.pow(
-      pixel.r - color.r,
-      2
-    )
-
-    +
-
-    Math.pow(
-      pixel.g - color.g,
-      2
-    )
-
-    +
-
-    Math.pow(
-      pixel.b - color.b,
-      2
-    )
-
+    (a.r-b.r) ** 2 +
+    (a.g-b.g) ** 2 +
+    (a.b-b.b) ** 2
   );
-}
-
-
-/* ==================================================
-   透明ピクセル判定
-================================================== */
-
-function isTransparent(pixel){
-
-  return pixel.a < 20;
 
 }
 
 
-/* ==================================================
-   洪水・津波用
-   浸水深の色候補
+function visiblePixels(pixels){
 
-   スコアは100に近いほど危険
-================================================== */
+  return pixels.filter(
+    pixel =>
+      Number(pixel.a) >= 20
+  );
+
+}
+
+
+/*
+  洪水・津波の凡例色。
+
+  色からの浸水深は
+  あくまで概算表示として使う。
+*/
 
 const WATER_COLORS = [
 
@@ -1554,7 +1059,7 @@ const WATER_COLORS = [
     g:245,
     b:169,
     risk:30,
-    depth:"0.3m〜0.5m"
+    depth:"0.3〜0.5m"
   },
 
   {
@@ -1562,7 +1067,7 @@ const WATER_COLORS = [
     g:225,
     b:166,
     risk:40,
-    depth:"0.5m〜1m"
+    depth:"0.5〜1m"
   },
 
   {
@@ -1570,7 +1075,7 @@ const WATER_COLORS = [
     g:216,
     b:192,
     risk:55,
-    depth:"1m〜3m"
+    depth:"1〜3m"
   },
 
   {
@@ -1578,7 +1083,7 @@ const WATER_COLORS = [
     g:183,
     b:183,
     risk:70,
-    depth:"3m〜5m"
+    depth:"3〜5m"
   },
 
   {
@@ -1586,7 +1091,7 @@ const WATER_COLORS = [
     g:145,
     b:145,
     risk:85,
-    depth:"5m〜10m"
+    depth:"5〜10m"
   },
 
   {
@@ -1594,7 +1099,7 @@ const WATER_COLORS = [
     g:133,
     b:201,
     risk:95,
-    depth:"10m〜20m"
+    depth:"10〜20m"
   },
 
   {
@@ -1608,46 +1113,50 @@ const WATER_COLORS = [
 ];
 
 
-/* ==================================================
-   浸水色を判定
-================================================== */
+function detectWaterColor(
+  pixels
+){
 
-function detectWaterColor(pixels){
+  const visible =
+    visiblePixels(pixels);
+
+
+  if(!visible.length){
+
+    return null;
+
+  }
+
 
   let best = null;
-
   let bestDistance =
     Infinity;
 
 
-  for(const pixel of pixels){
-
-    if(isTransparent(pixel)){
-      continue;
-    }
-
+  for(const pixel of visible){
 
     for(
-      const color
+      const legend
       of WATER_COLORS
     ){
 
       const distance =
         colorDistance(
           pixel,
-          color
+          legend
         );
 
 
       if(
-        distance
-        < bestDistance
+        distance <
+        bestDistance
       ){
 
         bestDistance =
           distance;
 
-        best = color;
+        best =
+          legend;
 
       }
 
@@ -1657,217 +1166,317 @@ function detectWaterColor(pixels){
 
 
   /*
-    色の差が大きすぎる場合は
-    浸水色とは判定しない
+    全く別の色を
+    浸水色と誤認しないための閾値
   */
 
-  if(
-    !best ||
-    bestDistance > 75
-  ){
+  if(bestDistance > 75){
 
     return null;
 
   }
 
 
-  return{
+  return {
     ...best,
     distance:bestDistance
   };
-}
-
-
-/* ==================================================
-   タイルそのものに
-   有効な描画が存在するか
-================================================== */
-
-function hasVisiblePixel(pixels){
-
-  return pixels.some(
-    pixel =>
-      !isTransparent(pixel)
-  );
 
 }
 
 
-/* ==================================================
-   洪水判定
-================================================== */
+/* =================================
+   洪水
+================================= */
 
 async function floodRisk(
   lat,
-  lon
+  lon,
+  pref
 ){
 
-  const template =
-    DISAPORTAL_RASTER
-    + "01_flood_l2_shinsuishin_data/"
-    + "{z}/{x}/{y}.png";
+  const templates = [
+
+    TILE_BASE +
+    "01_flood_l2_shinsuishin_data/" +
+    "{z}/{x}/{y}.png"
+
+  ];
 
 
-  const result =
-    await readTileWithZoomFallback(
-      template,
-      lat,
-      lon
+  /*
+    都道府県別データも確認する。
+
+    統合版で着色がなくても、
+    都道府県別にデータがある可能性を
+    確認してから「区域外」にする。
+  */
+
+  if(pref){
+
+    templates.push(
+
+      TILE_BASE +
+      "01_flood_l2_shinsuishin_pref_data/" +
+      pref +
+      "/{z}/{x}/{y}.png"
+
     );
+
+  }
+
+
+  let checked = false;
+  let allPixels = [];
+
+
+  for(
+    const template
+    of templates
+  ){
+
+    const result =
+      await fetchWithZoomFallback(
+        template,
+        lat,
+        lon
+      );
+
+
+    if(
+      result.status === "error"
+    ){
+
+      continue;
+
+    }
+
+
+    checked = true;
+
+
+    if(
+      result.status === "ok"
+    ){
+
+      allPixels.push(
+        ...result.pixels
+      );
+
+    }
+
+  }
+
+
+  if(!checked){
+
+    throw new Error(
+      "洪水データ取得失敗"
+    );
+
+  }
 
 
   const detected =
     detectWaterColor(
-      result.pixels
+      allPixels
     );
 
 
-  if(detected){
+  if(!detected){
 
-    return{
-
-      risk:
-        detected.risk,
-
+    return {
+      risk:5,
       detail:
-        "洪水浸水想定：約"
-        + detected.depth
-
+        "洪水浸水想定区域の着色なし"
     };
 
   }
 
 
-  /*
-    タイル取得自体には成功したが、
-    対象地点に浸水色がない
-  */
-
-  return{
-
-    risk:5,
-
+  return {
+    risk:detected.risk,
     detail:
-      "洪水浸水想定区域の着色なし"
-
+      "洪水浸水想定：約"
+      + detected.depth
+      + "（概算）"
   };
+
 }
 
 
-/* ==================================================
+/* =================================
    土砂災害
+================================= */
 
-   3種類を別々に確認する
-================================================== */
-
-const LAND_HAZARDS = [
+const LAND_LAYERS = [
 
   {
     name:"土石流",
+    national:
+      TILE_BASE +
+      "05_dosekiryukeikaikuiki/" +
+      "{z}/{x}/{y}.png",
 
-    template:
-      DISAPORTAL_RASTER
-      + "05_dosekiryukeikaikuiki/"
-      + "{z}/{x}/{y}.png"
+    prefecture:
+      "05_dosekiryukeikaikuiki_data"
   },
 
   {
     name:"急傾斜地",
+    national:
+      TILE_BASE +
+      "05_kyukeishakeikaikuiki/" +
+      "{z}/{x}/{y}.png",
 
-    template:
-      DISAPORTAL_RASTER
-      + "05_kyukeishakeikaikuiki/"
-      + "{z}/{x}/{y}.png"
+    prefecture:
+      "05_kyukeishakeikaikuiki_data"
   },
 
   {
     name:"地すべり",
+    national:
+      TILE_BASE +
+      "05_jisuberikeikaikuiki/" +
+      "{z}/{x}/{y}.png",
 
-    template:
-      DISAPORTAL_RASTER
-      + "05_jisuberikeikaikuiki/"
-      + "{z}/{x}/{y}.png"
+    prefecture:
+      "05_jisuberikeikaikuiki_data"
   }
 
 ];
 
 
-/* ==================================================
-   土砂災害1種類を確認
-================================================== */
-
-async function checkLandHazard(
-  hazard,
+async function checkLandLayer(
+  layer,
   lat,
-  lon
+  lon,
+  pref
 ){
 
-  const result =
-    await readTileWithZoomFallback(
-      hazard.template,
-      lat,
-      lon
-    );
+  const templates =
+    [layer.national];
 
 
-  const visible =
-    hasVisiblePixel(
-      result.pixels
-    );
+  if(pref){
 
+    templates.push(
 
-  return{
-    name:hazard.name,
-    visible
-  };
-}
-
-
-/* ==================================================
-   土砂災害総合判定
-================================================== */
-
-async function landslideRisk(
-  lat,
-  lon
-){
-
-  const results =
-    await Promise.allSettled(
-
-      LAND_HAZARDS.map(
-        hazard =>
-          checkLandHazard(
-            hazard,
-            lat,
-            lon
-          )
-      )
+      TILE_BASE +
+      layer.prefecture +
+      "/" +
+      pref +
+      "/{z}/{x}/{y}.png"
 
     );
 
+  }
 
-  const successful =
-    results
 
-      .filter(
-        result =>
-          result.status
-          === "fulfilled"
-      )
+  let checked = false;
 
-      .map(
-        result =>
-          result.value
+
+  for(
+    const template
+    of templates
+  ){
+
+    const result =
+      await fetchWithZoomFallback(
+        template,
+        lat,
+        lon
       );
 
 
-  /*
-    3種類全部取得不能なら
-    安全とは判定しない
-  */
+    if(
+      result.status === "error"
+    ){
 
-  if(successful.length === 0){
+      continue;
+
+    }
+
+
+    checked = true;
+
+
+    if(
+      result.status === "ok"
+    ){
+
+      const visible =
+        visiblePixels(
+          result.pixels
+        );
+
+
+      if(visible.length){
+
+        return {
+          checked:true,
+          hit:true
+        };
+
+      }
+
+    }
+
+  }
+
+
+  return {
+    checked,
+    hit:false
+  };
+
+}
+
+
+async function landslideRisk(
+  lat,
+  lon,
+  pref
+){
+
+  const hits = [];
+
+  let checkedLayers = 0;
+
+
+  for(
+    const layer
+    of LAND_LAYERS
+  ){
+
+    const result =
+      await checkLandLayer(
+        layer,
+        lat,
+        lon,
+        pref
+      );
+
+
+    if(result.checked){
+
+      checkedLayers++;
+
+    }
+
+
+    if(result.hit){
+
+      hits.push(
+        layer.name
+      );
+
+    }
+
+  }
+
+
+  if(!checkedLayers){
 
     throw new Error(
       "土砂災害データ取得失敗"
@@ -1876,467 +1485,597 @@ async function landslideRisk(
   }
 
 
-  const hits =
-    successful.filter(
-      result =>
-        result.visible
-    );
+  if(!hits.length){
 
-
-  if(hits.length === 0){
-
-    return{
-
+    return {
       risk:5,
-
       detail:
-        "確認できた土砂災害警戒区域の着色なし"
-
+        "土砂災害警戒区域の着色なし"
     };
 
   }
 
 
-  const names =
-    hits.map(
-      hit => hit.name
-    );
+  let risk = 75;
 
 
-  let risk;
+  if(hits.length >= 2){
 
-
-  if(hits.length === 1){
-
-    risk = 75;
-
-  }else{
-
-    risk = 95;
+    risk = 90;
 
   }
 
 
-  return{
-
+  return {
     risk,
-
     detail:
-      names.join("・")
+      hits.join("・")
       + "の警戒区域に該当"
-
   };
-}
 
-
-/* ==================================================
+  }
+   /* =================================
    津波
+================================= */
 
-   全国統合タイルを使用
-================================================== */
+/*
+  ハザードマップポータルで
+  津波データが公開されている都道府県。
+
+  公開対象外を「安全」と誤判定しないために
+  明示的に管理する。
+*/
+
+const TSUNAMI_SUPPORTED = new Set([
+  "01","02","03","04","05","06","07","08",
+  "12","13","14","15","16","17","18",
+  "21","22","23","24","26","27","28",
+  "30","31","32","33","34","35","36",
+  "37","38","39","40","41","42","43",
+  "44","45","46","47"
+]);
+
 
 async function tsunamiRisk(
   lat,
-  lon
+  lon,
+  pref
 ){
 
-  const template =
-    DISAPORTAL_RASTER
-    + "04_tsunami_newlegend_data/"
-    + "{z}/{x}/{y}.png";
+  if(!pref){
 
-
-  const result =
-    await readTileWithZoomFallback(
-      template,
-      lat,
-      lon
+    throw new Error(
+      "都道府県を判定できません"
     );
-
-
-  const detected =
-    detectWaterColor(
-      result.pixels
-    );
-
-
-  if(detected){
-
-    return{
-
-      risk:
-        detected.risk,
-
-      detail:
-        "津波浸水想定：約"
-        + detected.depth
-
-    };
 
   }
 
 
   /*
-    タイル取得成功＋着色なしなら
-    浸水想定区域外として扱う
+    公開対象外の場合は
+    勝手に低リスク扱いしない。
   */
 
-  return{
-
-    risk:5,
-
-    detail:
-      "津波浸水想定区域の着色なし"
-
-  };
-}
-
-
-/* ==================================================
-   個別リスクの表示ランク
-================================================== */
-
-function riskLevel(risk){
-
-  if(risk >= 80){
-
-    return "🔴 高い";
-
-  }
-
-  if(risk >= 50){
-
-    return "🟠 注意";
-
-  }
-
-  if(risk >= 25){
-
-    return "🟡 やや低い";
-
-  }
-
-  return "🟢 低い";
-}
-
-
-/* ==================================================
-   個別リスクを画面表示
-================================================== */
-
-function showRisk(
-  name,
-  data
-){
-
-  $(
-    name + "Score"
-  ).textContent =
-    data.risk;
-
-
-  $(
-    name + "Label"
-  ).textContent =
-    riskLevel(
-      data.risk
-    );
-
-
-  $(
-    name + "Detail"
-  ).textContent =
-    data.detail;
-
-
-  $(
-    name + "Bar"
-  ).style.width =
-    data.risk + "%";
-
-}
-
-
-/* ==================================================
-   データ取得失敗時
-
-   取得失敗を低リスクにはしない
-================================================== */
-
-function showUnavailable(
-  name,
-  message
-){
-
-  $(
-    name + "Score"
-  ).textContent =
-    "--";
-
-
-  $(
-    name + "Label"
-  ).textContent =
-    "⚪ 確認できません";
-
-
-  $(
-    name + "Detail"
-  ).textContent =
-    message;
-
-
-  $(
-    name + "Bar"
-  ).style.width =
-    "0%";
-
-}
-
-
-/* ==================================================
-   ここまで第2/3
-
-   この直後に第3/3を貼る
-================================================== */
-    /* ==================================================
-   第3/3
-   総合スコア・おすすめ防災グッズ・診断実行
-================================================== */
-
-
-/* ==================================================
-   おすすめ防災グッズ
-================================================== */
-
-function makeGoods(
-  quake,
-  flood,
-  land,
-  tsunami
-){
-
-  const list = [];
-
-
-  function add(
-    title,
-    description
+  if(
+    !TSUNAMI_SUPPORTED.has(pref)
   ){
 
-    /*
-      同じ商品が重複しないようにする
-    */
+    throw new Error(
+      "津波データ公開対象外"
+    );
 
-    const exists =
-      list.some(
-        item =>
-          item.title === title
+  }
+
+
+  const templates = [
+
+    TILE_BASE +
+    "04_tsunami_newlegend_data/" +
+    "{z}/{x}/{y}.png",
+
+    TILE_BASE +
+    "04_tsunami_newlegend_pref_data/" +
+    pref +
+    "/{z}/{x}/{y}.png"
+
+  ];
+
+
+  let checked = false;
+  let allPixels = [];
+
+
+  for(
+    const template
+    of templates
+  ){
+
+    const result =
+      await fetchWithZoomFallback(
+        template,
+        lat,
+        lon
       );
 
 
-    if(!exists){
+    if(
+      result.status === "error"
+    ){
 
-      list.push({
-        title,
-        description
-      });
+      continue;
+
+    }
+
+
+    checked = true;
+
+
+    if(
+      result.status === "ok"
+    ){
+
+      allPixels.push(
+        ...result.pixels
+      );
 
     }
 
   }
 
 
-  /*
-    全員におすすめする基本装備
-  */
+  if(!checked){
 
-  add(
-    "💧 保存水",
-    "最低3日分、できれば7日分を目安に備蓄。"
-  );
-
-
-  add(
-    "🚽 携帯トイレ",
-    "断水や停電時のトイレ対策に。"
-  );
-
-
-  add(
-    "🔋 モバイルバッテリー",
-    "停電時のスマートフォンの電源確保に。"
-  );
-
-
-  /*
-    地震リスク
-  */
-
-  if(
-    quake &&
-    quake.risk >= 50
-  ){
-
-    add(
-      "🧷 家具転倒防止器具",
-      "大型家具の転倒・移動対策を優先。"
-    );
-
-
-    add(
-      "🔦 LEDライト",
-      "地震後の停電や夜間避難に備える。"
+    throw new Error(
+      "津波データ取得失敗"
     );
 
   }
 
 
-  /*
-    洪水リスク
-  */
-
-  if(
-    flood &&
-    flood.risk >= 50
-  ){
-
-    add(
-      "🎒 防水バッグ",
-      "避難時に貴重品や非常用品を水から守る。"
+  const detected =
+    detectWaterColor(
+      allPixels
     );
 
 
-    add(
-      "📱 防水ケース",
-      "スマートフォンや重要書類の浸水対策に。"
-    );
+  if(!detected){
 
-
-    add(
-      "👟 避難用シューズ",
-      "浸水時の避難に備え、歩きやすい靴を準備。"
-    );
+    return {
+      risk:5,
+      detail:
+        "津波浸水想定区域の着色なし"
+    };
 
   }
 
 
-  /*
-    土砂災害リスク
-  */
-
-  if(
-    land &&
-    land.risk >= 50
-  ){
-
-    add(
-      "📻 防災ラジオ",
-      "避難情報や気象情報を確認するために。"
-    );
-
-
-    add(
-      "🎒 避難リュック",
-      "警戒情報が出た際に早く避難できるよう準備。"
-    );
-
-
-    add(
-      "📣 ホイッスル",
-      "閉じ込められた場合などに位置を知らせる。"
-    );
-
-  }
-
-
-  /*
-    津波リスク
-  */
-
-  if(
-    tsunami &&
-    tsunami.risk >= 50
-  ){
-
-    add(
-      "🎒 避難リュック",
-      "津波発生時にすぐ高い場所へ避難できるよう準備。"
-    );
-
-
-    add(
-      "📣 ホイッスル",
-      "緊急時に周囲へ存在を知らせる。"
-    );
-
-
-    add(
-      "🔦 LEDライト",
-      "停電時や夜間避難の安全確保に。"
-    );
-
-  }
-
-
-  /*
-    HTMLへ表示
-  */
-
-  $("goods").innerHTML =
-    list.map(
-      item => {
-
-        return `
-          <div class="goodItem">
-
-            <strong>
-              ${item.title}
-            </strong>
-
-            <span>
-              ${item.description}
-            </span>
-
-          </div>
-        `;
-
-      }
-    ).join("");
+  return {
+    risk:detected.risk,
+    detail:
+      "津波浸水想定：約"
+      + detected.depth
+      + "（概算）"
+  };
 
 }
 
 
-/* ==================================================
-   公式ハザードマップへのリンク
-================================================== */
+/* =================================
+   リスク表示
+================================= */
 
-function setMapLinks(
+function riskLabel(risk){
+
+  if(
+    !Number.isFinite(risk)
+  ){
+
+    return "確認できません";
+
+  }
+
+
+  if(risk <= 20){
+
+    return "低い";
+
+  }
+
+
+  if(risk <= 40){
+
+    return "やや低い";
+
+  }
+
+
+  if(risk <= 60){
+
+    return "中程度";
+
+  }
+
+
+  if(risk <= 80){
+
+    return "注意";
+
+  }
+
+
+  return "高い";
+
+}
+
+
+function setRiskDisplay(
+  prefix,
+  result
+){
+
+  const score =
+    $(prefix + "Score");
+
+  const label =
+    $(prefix + "Label");
+
+  const bar =
+    $(prefix + "Bar");
+
+  const detail =
+    $(prefix + "Detail");
+
+
+  if(
+    !result ||
+    !Number.isFinite(result.risk)
+  ){
+
+    score.textContent =
+      "--";
+
+    label.textContent =
+      "確認できません";
+
+    bar.style.width =
+      "0%";
+
+    detail.textContent =
+      result?.detail ||
+      "公的データを自動確認できません";
+
+    return;
+
+  }
+
+
+  const risk =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(result.risk)
+      )
+    );
+
+
+  score.textContent =
+    risk;
+
+  label.textContent =
+    riskLabel(risk);
+
+  bar.style.width =
+    risk + "%";
+
+  detail.textContent =
+    result.detail || "";
+
+}
+
+
+/* =================================
+   総合防災スコア
+================================= */
+
+function updateTotal(results){
+
+  const risks =
+    results
+      .map(
+        result =>
+          result &&
+          Number.isFinite(result.risk)
+            ? result.risk
+            : null
+      );
+
+
+  const available =
+    risks.filter(
+      value =>
+        Number.isFinite(value)
+    );
+
+
+  /*
+    4災害すべてを確認できた時だけ
+    総合点を出す。
+
+    データ欠損を安全扱いしない。
+  */
+
+  if(available.length !== 4){
+
+    $("totalScore").textContent =
+      "--";
+
+    $("totalGrade").textContent =
+      "一部データを確認できません";
+
+    return null;
+
+  }
+
+
+  const averageRisk =
+    available.reduce(
+      (sum,value)=>
+        sum + value,
+      0
+    ) / available.length;
+
+
+  /*
+    個別スコア：
+    高いほど危険
+
+    総合スコア：
+    高いほど安心
+  */
+
+  const safety =
+    Math.round(
+      100 - averageRisk
+    );
+
+
+  $("totalScore").textContent =
+    safety;
+
+
+  let grade;
+
+
+  if(safety >= 85){
+
+    grade =
+      "比較的安心度が高い";
+
+  }
+  else if(safety >= 70){
+
+    grade =
+      "比較的良好";
+
+  }
+  else if(safety >= 55){
+
+    grade =
+      "標準的";
+
+  }
+  else if(safety >= 40){
+
+    grade =
+      "注意が必要";
+
+  }
+  else{
+
+    grade =
+      "防災対策を強く推奨";
+
+  }
+
+
+  $("totalGrade").textContent =
+    grade;
+
+
+  return safety;
+
+}
+
+
+/* =================================
+   防災グッズ
+================================= */
+
+function updateGoods(results){
+
+  const [
+    quake,
+    flood,
+    land,
+    tsunami
+  ] = results;
+
+
+  const goods = [];
+
+
+  if(
+    quake &&
+    Number.isFinite(quake.risk) &&
+    quake.risk >= 55
+  ){
+
+    goods.push({
+      name:"家具転倒防止器具",
+      text:
+        "地震時の家具転倒や落下対策に。"
+    });
+
+    goods.push({
+      name:"非常用ライト",
+      text:
+        "停電時にすぐ使えるライトを準備。"
+    });
+
+  }
+
+
+  if(
+    flood &&
+    Number.isFinite(flood.risk) &&
+    flood.risk >= 40
+  ){
+
+    goods.push({
+      name:"防水バッグ",
+      text:
+        "重要書類やスマートフォンの浸水対策に。"
+    });
+
+  }
+
+
+  if(
+    land &&
+    Number.isFinite(land.risk) &&
+    land.risk >= 55
+  ){
+
+    goods.push({
+      name:"携帯ラジオ",
+      text:
+        "避難情報を確認できる手段を確保。"
+    });
+
+  }
+
+
+  if(
+    tsunami &&
+    Number.isFinite(tsunami.risk) &&
+    tsunami.risk >= 40
+  ){
+
+    goods.push({
+      name:"避難用リュック",
+      text:
+        "すぐ避難できるよう必要品をまとめて準備。"
+    });
+
+  }
+
+
+  /*
+    どのリスクでも役立つ
+    基本用品。
+  */
+
+  goods.push({
+    name:"飲料水・非常食",
+    text:
+      "最低3日分を目安に備蓄。"
+  });
+
+
+  goods.push({
+    name:"モバイルバッテリー",
+    text:
+      "停電時の連絡・情報収集手段を確保。"
+  });
+
+
+  const unique = [];
+
+  const names =
+    new Set();
+
+
+  for(const item of goods){
+
+    if(
+      names.has(item.name)
+    ){
+      continue;
+    }
+
+    names.add(item.name);
+
+    unique.push(item);
+
+  }
+
+
+  $("goods").innerHTML =
+    unique
+      .map(
+        item => `
+          <div class="goodItem">
+            <strong>
+              ${item.name}
+            </strong>
+            <span>
+              ${item.text}
+            </span>
+          </div>
+        `
+      )
+      .join("");
+
+}
+
+
+/* =================================
+   ハザードマップURL
+================================= */
+
+function hazardMapUrl(
   lat,
   lon
 ){
 
   /*
-    指定住所付近を開く
+    国土地理院
+    ハザードマップポータル
+
+    緯度経度を中心位置として開く。
   */
 
-  const url =
+  return (
     "https://disaportal.gsi.go.jp/maps/"
-    + "index.html"
-    + "?ll="
+    + "?base=pale"
+    + "&ll="
     + encodeURIComponent(
         lat + "," + lon
       )
-    + "&z=16";
+    + "&z=16"
+  );
+
+}
+
+
+function updateMapLinks(
+  lat,
+  lon
+){
+
+  const url =
+    hazardMapUrl(
+      lat,
+      lon
+    );
 
 
   $("floodMap").href =
     url;
 
-
   $("landMap").href =
     url;
-
 
   $("tsunamiMap").href =
     url;
@@ -2344,249 +2083,27 @@ function setMapLinks(
 }
 
 
-/* ==================================================
-   診断前表示をリセット
-================================================== */
+/* =================================
+   エラー結果
+================================= */
 
-function resetRiskDisplay(){
-
-  const names = [
-    "quake",
-    "flood",
-    "land",
-    "tsunami"
-  ];
-
-
-  for(
-    const name
-    of names
-  ){
-
-    $(
-      name + "Score"
-    ).textContent =
-      "--";
-
-
-    $(
-      name + "Label"
-    ).textContent =
-      "取得中...";
-
-
-    $(
-      name + "Detail"
-    ).textContent =
-      "公的データを確認しています。";
-
-
-    $(
-      name + "Bar"
-    ).style.width =
-      "0%";
-
-  }
-
-
-  $("totalScore").textContent =
-    "--";
-
-
-  $("totalGrade").textContent =
-    "4つの災害を確認しています";
-
-}
-
-
-/* ==================================================
-   総合防災スコア
-================================================== */
-
-function calculateTotalScore(
-  quake,
-  flood,
-  land,
-  tsunami
+function unavailable(
+  name
 ){
 
-  const hazards = [
-    quake,
-    flood,
-    land,
-    tsunami
-  ];
-
-
-  /*
-    数値として評価できたものだけ抽出
-  */
-
-  const available =
-    hazards.filter(
-      data =>
-        data &&
-        Number.isFinite(
-          data.risk
-        )
-    );
-
-
-  /*
-    4災害すべて取得できなければ
-    総合点を確定しない。
-
-    「4災害診断」と表示する以上、
-    一部だけで100点満点を出さない。
-  */
-
-  if(
-    available.length !== 4
-  ){
-
-    $("totalScore").textContent =
-      "--";
-
-
-    $("totalGrade").textContent =
-      "⚪ 一部データを確認できません";
-
-
-    return null;
-
-  }
-
-
-  /*
-    個別リスク
-      高いほど危険
-
-    総合防災スコア
-      高いほど安心
-
-    なので、
-
-    100 - 平均リスク
-
-    とする。
-  */
-
-  const averageRisk =
-    available.reduce(
-      (sum,data) =>
-        sum + data.risk,
-      0
-    )
-    / available.length;
-
-
-  const total =
-    Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          100 - averageRisk
-        )
-      )
-    );
-
-
-  $("totalScore").textContent =
-    total;
-
-
-  if(total >= 80){
-
-    $("totalGrade").textContent =
-      "🟢 比較的リスクは低め";
-
-  }
-  else if(total >= 60){
-
-    $("totalGrade").textContent =
-      "🟡 防災対策を確認しましょう";
-
-  }
-  else{
-
-    $("totalGrade").textContent =
-      "🔴 防災対策を強化しましょう";
-
-  }
-
-
-  return total;
+  return {
+    risk:null,
+    detail:
+      name
+      + "データを自動確認できません"
+  };
 
 }
 
 
-/* ==================================================
-   1つの災害判定を安全に実行
-
-   エラーが起きても
-   他の災害判定を止めない
-================================================== */
-
-async function safeDiagnosis(
-  name,
-  functionToRun,
-  errorMessage
-){
-
-  try{
-
-    const data =
-      await functionToRun();
-
-
-    if(
-      !data ||
-      !Number.isFinite(
-        data.risk
-      )
-    ){
-
-      throw new Error(
-        "有効なスコアではありません"
-      );
-
-    }
-
-
-    showRisk(
-      name,
-      data
-    );
-
-
-    return data;
-
-  }
-  catch(error){
-
-    console.error(
-      name,
-      error
-    );
-
-
-    showUnavailable(
-      name,
-      errorMessage
-    );
-
-
-    return null;
-
-  }
-
-}
-
-
-/* ==================================================
-   メイン診断
-================================================== */
+/* =================================
+   診断実行
+================================= */
 
 async function diagnose(){
 
@@ -2595,10 +2112,6 @@ async function diagnose(){
       .value
       .trim();
 
-
-  /*
-    住所未入力
-  */
 
   if(!address){
 
@@ -2611,203 +2124,211 @@ async function diagnose(){
   }
 
 
-  const btn =
+  const button =
     $("btn");
 
 
-  /*
-    二重タップ防止
-  */
-
-  btn.disabled =
+  button.disabled =
     true;
 
+  button.textContent =
+    "診断中...";
 
-  btn.textContent =
-    "4つの災害を診断中...";
-
-
-  /*
-    結果エリアを表示
-  */
 
   $("result")
     .classList
     .remove("hidden");
 
 
-  resetRiskDisplay();
+  $("totalScore").textContent =
+    "--";
+
+  $("totalGrade").textContent =
+    "公的データを確認中...";
+
+
+  setRiskDisplay(
+    "quake",
+    {
+      risk:null,
+      detail:
+        "地震データを確認中..."
+    }
+  );
+
+
+  setRiskDisplay(
+    "flood",
+    {
+      risk:null,
+      detail:
+        "洪水データを確認中..."
+    }
+  );
+
+
+  setRiskDisplay(
+    "land",
+    {
+      risk:null,
+      detail:
+        "土砂災害データを確認中..."
+    }
+  );
+
+
+  setRiskDisplay(
+    "tsunami",
+    {
+      risk:null,
+      detail:
+        "津波データを確認中..."
+    }
+  );
 
 
   try{
 
-    /* --------------------------------
-       住所 → 緯度経度
-    -------------------------------- */
-
-    const position =
+    const pos =
       await geocode(
         address
       );
 
 
-    const lat =
-      position.lat;
+    $("foundAddress").textContent =
+      pos.title;
 
 
-    const lon =
-      position.lon;
-
-
-    /*
-      検索された住所
-    */
-
-    $("foundAddress")
-      .textContent =
-      "検索結果："
-      + position.title;
-
-
-    $("coords")
-      .textContent =
+    $("coords").textContent =
       "緯度 "
-      + lat.toFixed(6)
+      + pos.lat.toFixed(6)
       + " / 経度 "
-      + lon.toFixed(6);
+      + pos.lon.toFixed(6);
 
 
     /*
-      ハザードマップリンク
+      入力住所と検索結果の両方から
+      都道府県を探す。
+
+      西新宿のように検索結果側で
+      表記が短くなった場合にも対応。
     */
 
-    setMapLinks(
-      lat,
-      lon
+    const pref =
+      prefCode(
+        address
+        + " "
+        + pos.title
+      );
+
+
+    updateMapLinks(
+      pos.lat,
+      pos.lon
     );
 
 
-    /* ==================================================
-       4災害を実行
+    /*
+      4災害を並列取得。
+      1つ失敗しても
+      他の診断結果は表示する。
+    */
 
-       Promise.allで同時に取得する。
-       1つ失敗しても
-       他の判定は続行する。
-    ================================================== */
+    const settled =
+      await Promise.allSettled([
 
-    const [
+        quakeRisk(
+          pos.lat,
+          pos.lon
+        ),
+
+        floodRisk(
+          pos.lat,
+          pos.lon,
+          pref
+        ),
+
+        landslideRisk(
+          pos.lat,
+          pos.lon,
+          pref
+        ),
+
+        tsunamiRisk(
+          pos.lat,
+          pos.lon,
+          pref
+        )
+
+      ]);
+
+
+    const quake =
+      settled[0].status === "fulfilled"
+        ? settled[0].value
+        : unavailable("地震");
+
+
+    const flood =
+      settled[1].status === "fulfilled"
+        ? settled[1].value
+        : unavailable("洪水");
+
+
+    const land =
+      settled[2].status === "fulfilled"
+        ? settled[2].value
+        : unavailable("土砂災害");
+
+
+    const tsunami =
+      settled[3].status === "fulfilled"
+        ? settled[3].value
+        : unavailable("津波");
+
+
+    const results = [
       quake,
       flood,
       land,
       tsunami
-    ] = await Promise.all([
+    ];
 
 
-      /*
-        地震
-      */
+    setRiskDisplay(
+      "quake",
+      quake
+    );
 
-      safeDiagnosis(
+    setRiskDisplay(
+      "flood",
+      flood
+    );
 
-        "quake",
+    setRiskDisplay(
+      "land",
+      land
+    );
 
-        () =>
-          quakeRisk(
-            lat,
-            lon
-          ),
-
-        "地震データを自動確認できません"
-
-      ),
-
-
-      /*
-        洪水
-      */
-
-      safeDiagnosis(
-
-        "flood",
-
-        () =>
-          floodRisk(
-            lat,
-            lon
-          ),
-
-        "洪水データを自動確認できません"
-
-      ),
-
-
-      /*
-        土砂災害
-      */
-
-      safeDiagnosis(
-
-        "land",
-
-        () =>
-          landslideRisk(
-            lat,
-            lon
-          ),
-
-        "土砂災害データを自動確認できません"
-
-      ),
-
-
-      /*
-        津波
-      */
-
-      safeDiagnosis(
-
-        "tsunami",
-
-        () =>
-          tsunamiRisk(
-            lat,
-            lon
-          ),
-
-        "津波データを自動確認できません"
-
-      )
-
-    ]);
-
-
-    /* ==================================================
-       総合スコア
-    ================================================== */
-
-    calculateTotalScore(
-      quake,
-      flood,
-      land,
+    setRiskDisplay(
+      "tsunami",
       tsunami
     );
 
 
-    /* ==================================================
-       防災グッズ
-    ================================================== */
-
-    makeGoods(
-      quake,
-      flood,
-      land,
-      tsunami
+    updateTotal(
+      results
     );
 
 
-    /* ==================================================
-       結果まで移動
-    ================================================== */
+    updateGoods(
+      results
+    );
+
+
+    /*
+      結果位置へ移動
+    */
 
     $("result")
       .scrollIntoView({
@@ -2819,44 +2340,32 @@ async function diagnose(){
   catch(error){
 
     console.error(
-      "診断エラー",
       error
     );
 
 
-    /*
-      ここに来るのは主に
-      住所検索自体が失敗した場合
-    */
-
-    $("totalScore")
-      .textContent =
+    $("totalScore").textContent =
       "--";
 
-
-    $("totalGrade")
-      .textContent =
+    $("totalGrade").textContent =
       "診断できませんでした";
 
 
-    alert(
-      error?.message
-      ||
-      "診断に失敗しました"
-    );
+    $("foundAddress").textContent =
+      error?.message ||
+      "住所または通信状況を確認してください";
+
+
+    $("coords").textContent =
+      "";
 
   }
   finally{
 
-    /*
-      ボタンを元に戻す
-    */
-
-    btn.disabled =
+    button.disabled =
       false;
 
-
-    btn.textContent =
+    button.textContent =
       "無料で診断する";
 
   }
@@ -2864,20 +2373,25 @@ async function diagnose(){
 }
 
 
-/* ==================================================
-   Enterキーでも診断できるようにする
-================================================== */
+/* =================================
+   ボタン・Enterキー
+================================= */
+
+$("btn")
+  .addEventListener(
+    "click",
+    diagnose
+  );
+
 
 $("address")
   .addEventListener(
     "keydown",
-    function(event){
+    event => {
 
       if(
         event.key === "Enter"
       ){
-
-        event.preventDefault();
 
         diagnose();
 
@@ -2885,11 +2399,6 @@ $("address")
 
     }
   );
-
-
-/* ==================================================
-   第3/3 終了
-================================================== */
 
 </script>
 
