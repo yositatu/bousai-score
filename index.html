@@ -315,7 +315,43 @@ J-SHISの「30年以内に震度6弱以上となる確率」を使用。
 
 </div>
 
+<div class="risk">
 
+<h3>💧 内水氾濫</h3>
+
+<div
+  id="naisuiScore"
+  class="riskScore">
+--
+</div>
+
+<p id="naisuiLabel">
+取得中
+</p>
+
+<div class="bar">
+<div
+  id="naisuiBar"
+  class="fill"
+  style="width:0%">
+</div>
+</div>
+
+<p id="naisuiDetail"></p>
+
+<small>
+大雨で下水道などの排水能力を超えて発生する
+内水氾濫（雨水出水）の浸水想定区域を参照。
+</small>
+
+<a
+  id="naisuiMap"
+  class="mapLink"
+  target="_blank">
+公式ハザードマップで確認
+</a>
+
+</div>
 <div class="risk">
 
 <h3>⛰️ 土砂災害</h3>
@@ -869,7 +905,149 @@ async function floodRisk(
  };
 
 }
+/* --------------------
+   内水氾濫
+-------------------- */
 
+async function naisuiRisk(
+  lat,
+  lon
+){
+
+  const tile =
+    "https://disaportaldata.gsi.go.jp/"
+    +"raster/"
+    +"02_naisui_data/"
+    +"{z}/{x}/{y}.png";
+
+  const pixel =
+    await readTilePixel(
+      tile,
+      lat,
+      lon
+    );
+
+  /*
+    タイルそのものを取得できない場合は
+    「安全」と決めつけない
+  */
+  if(!pixel){
+    return{
+      risk: null,
+      detail:
+        "内水氾濫データを取得できません"
+    };
+  }
+
+  /*
+    ほぼ透明なら着色なし
+  */
+  if(pixel.a < 20){
+    return{
+      risk: 5,
+      detail:
+        "内水氾濫浸水想定区域の着色なし"
+    };
+  }
+
+  /*
+    内水氾濫の浸水深を
+    タイル色から判定
+  */
+  const naisuiColors = [
+
+    {
+      r:255,
+      g:255,
+      b:179,
+      risk:25,
+      depth:"0.3m未満"
+    },
+
+    {
+      r:247,
+      g:245,
+      b:169,
+      risk:30,
+      depth:"0.3m〜0.5m"
+    },
+
+    {
+      r:248,
+      g:225,
+      b:166,
+      risk:40,
+      depth:"0.5m〜1m"
+    },
+
+    {
+      r:255,
+      g:216,
+      b:192,
+      risk:50,
+      depth:"1m〜3m"
+    },
+
+    {
+      r:255,
+      g:183,
+      b:183,
+      risk:65,
+      depth:"3m〜5m"
+    },
+
+    {
+      r:255,
+      g:145,
+      b:145,
+      risk:80,
+      depth:"5m以上"
+    }
+
+  ];
+
+  let best = null;
+  let bestDistance = Infinity;
+
+  for(const c of naisuiColors){
+
+    const distance =
+      Math.sqrt(
+        Math.pow(pixel.r-c.r,2) +
+        Math.pow(pixel.g-c.g,2) +
+        Math.pow(pixel.b-c.b,2)
+      );
+
+    if(distance < bestDistance){
+      bestDistance = distance;
+      best = c;
+    }
+
+  }
+
+  /*
+    色が大きく違う場合は
+    無理に浸水深を決めない
+  */
+  if(
+    !best ||
+    bestDistance > 80
+  ){
+    return{
+      risk:15,
+      detail:
+        "内水氾濫データあり・浸水深判定不明"
+    };
+  }
+
+  return{
+    risk:best.risk,
+    detail:
+      "内水氾濫浸水想定区域・"
+      +best.depth
+  };
+
+}
 
 /* ---------------------
 土砂
@@ -1002,6 +1180,7 @@ function showRisk(
 function goods(
  quake,
  flood,
+  naisui,
  land
 ){
 
@@ -1046,7 +1225,29 @@ function goods(
   ]);
 
  }
+if(naisui?.risk>=50){
 
+  list.push([
+    "💧 吸水土のう",
+    "内水氾濫による浸水対策に。"
+  ]);
+
+  list.push([
+    "🚪 簡易止水板",
+    "玄関などからの浸水対策に。"
+  ]);
+
+  list.push([
+    "🎒 防水バッグ",
+    "貴重品や非常用品の浸水対策に。"
+  ]);
+
+  list.push([
+    "📱 防水ケース",
+    "スマートフォンや重要書類の保護に。"
+  ]);
+
+}
 
  if(land?.risk>=50){
 
@@ -1148,7 +1349,8 @@ async function diagnose(){
 
   $("floodMap").href =
   hazardUrl;
-
+　$("naisuiMap").href =
+　hazardUrl;
   $("landMap").href =
   hazardUrl;
 
@@ -1156,7 +1358,7 @@ async function diagnose(){
   let quake=null;
   let flood=null;
   let land=null;
-
+　let naisui=null;
 
   try{
 
@@ -1205,7 +1407,44 @@ async function diagnose(){
 
   }
 
+try{
 
+  naisui =
+  await naisuiRisk(
+    pos.lat,
+    pos.lon
+  );
+
+  if(naisui && naisui.risk !== null){
+
+    showRisk(
+      "naisui",
+      naisui
+    );
+
+  }else{
+
+    $("naisuiScore").textContent = "--";
+    $("naisuiLabel").textContent =
+      "データ未整備";
+
+    $("naisuiDetail").textContent =
+      naisui?.detail ||
+      "内水氾濫データを取得できません";
+
+  }
+
+}catch(e){
+
+  $("naisuiScore").textContent = "--";
+
+  $("naisuiLabel").textContent =
+    "自動判定できません";
+
+  $("naisuiDetail").textContent =
+    "公式ハザードマップで確認してください";
+
+}
   try{
 
    land =
@@ -1233,12 +1472,18 @@ async function diagnose(){
 
 
   const available =
-  [
-   quake,
-   flood,
-   land
-  ]
-  .filter(Boolean);
+[
+  quake,
+  flood,
+  naisui,
+  land
+]
+.filter(
+  data =>
+    data &&
+    data.risk !== null &&
+    Number.isFinite(data.risk)
+);
 
 
   if(
@@ -1293,6 +1538,7 @@ async function diagnose(){
   goods(
    quake,
    flood,
+    naisui,
    land
   );
 
