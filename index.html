@@ -690,7 +690,6 @@ async function readTilePixel(
 /* ---------------------
 洪水
 --------------------- */
-
 async function floodRisk(
  lat,
  lon
@@ -710,58 +709,162 @@ async function floodRisk(
  );
 
  /*
- 透明 = 浸水区域外
+ 透明なら
+ 洪水浸水想定区域の着色なし
  */
-
- if(pixel.a < 20){
-
+ if(
+  !pixel ||
+  pixel.a < 20
+ ){
   return{
    risk:5,
    detail:
    "洪水浸水想定区域の着色なし"
   };
+ }
+
+
+ /*
+ 浸水深ごとの代表色
+ */
+ const floodColors = [
+
+  {
+   r:255,
+   g:255,
+   b:179,
+   risk:25,
+   depth:"0.3m未満"
+  },
+
+  {
+   r:247,
+   g:245,
+   b:169,
+   risk:30,
+   depth:"0.3m～0.5m"
+  },
+
+  {
+   r:248,
+   g:225,
+   b:166,
+   risk:40,
+   depth:"0.5m～1m"
+  },
+
+  {
+   r:255,
+   g:216,
+   b:192,
+   risk:50,
+   depth:"1m～3m"
+  },
+
+  {
+   r:255,
+   g:183,
+   b:183,
+   risk:65,
+   depth:"3m～5m"
+  },
+
+  {
+   r:255,
+   g:145,
+   b:145,
+   risk:80,
+   depth:"5m～10m"
+  },
+
+  {
+   r:242,
+   g:133,
+   b:201,
+   risk:90,
+   depth:"10m～20m"
+  },
+
+  {
+   r:220,
+   g:122,
+   b:220,
+   risk:100,
+   depth:"20m以上"
+  }
+
+ ];
+
+
+ /*
+ 一番近いRGBを探す
+ */
+ let best = null;
+ let bestDistance =
+ Infinity;
+
+ for(
+  const c
+  of floodColors
+ ){
+
+  const dr =
+  pixel.r-c.r;
+
+  const dg =
+  pixel.g-c.g;
+
+  const db =
+  pixel.b-c.b;
+
+  const distance =
+  Math.sqrt(
+   dr*dr+
+   dg*dg+
+   db*db
+  );
+
+  if(
+   distance <
+   bestDistance
+  ){
+
+   bestDistance =
+   distance;
+
+   best = c;
+
+  }
 
  }
 
+
  /*
- 洪水区域内なら
- 色の強さを利用して
- 段階的にリスク評価
-
- 正式商用版では
- 凡例RGBを厳密に対応させる
+ 凡例色から離れすぎていたら
+ 無理に浸水深を決めない
  */
+ if(
+  !best ||
+  bestDistance > 80
+ ){
 
- const intensity =
- (
-  pixel.r
-  +
-  pixel.g
-  +
-  pixel.b
- )/3;
+  return{
+   risk:15,
+   detail:
+   "洪水データあり・浸水深判定不明"
+  };
 
- let risk;
-
- if(intensity > 220)
-  risk=35;
-
- else if(intensity > 180)
-  risk=50;
-
- else if(intensity > 130)
-  risk=70;
-
- else
-  risk=90;
+ }
 
 
  return{
 
-  risk:risk,
+  risk:
+  best.risk,
 
   detail:
-  "洪水浸水想定区域内"
+  "洪水浸水想定区域 "
+  +best.depth
 
  };
 
