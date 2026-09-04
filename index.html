@@ -626,7 +626,27 @@ async function quakeRisk(lat,lon){
     + "&epsg=4326"
     + "&attr=T30_I55_PS";
 
-  const response = await fetch(url);
+  let response;
+
+for(let attempt = 0; attempt < 3; attempt++){
+
+  try{
+    response = await fetch(url);
+
+    if(response.ok){
+      break;
+    }
+  }
+  catch(error){
+    if(attempt === 2){
+      throw error;
+    }
+  }
+
+  await new Promise(
+    resolve => setTimeout(resolve, 700)
+  );
+}
 
   if(!response.ok){
     throw new Error("地震データ取得失敗");
