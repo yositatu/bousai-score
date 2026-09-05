@@ -3240,15 +3240,16 @@ async function getTsunamiRisk(
 
 
   /*
-    タイルそのものが存在しない場合。
+    タイルが存在しない場合。
 
-    「取得エラー」と
-    「このXYZタイルに描画データが存在しない」
-    を区別する。
+    津波タイルは浸水想定区域が存在しない場所で
+    タイル自体が配信されない場合がある。
+
+    ただし「津波リスク0」とはせず、
+    最低リスク区分として扱う。
   */
   if(
-    tile.status ===
-    "tile-missing"
+    tile.status === "tile-missing"
   ){
 
     return makeRiskResult({
@@ -3259,16 +3260,13 @@ async function getTsunamiRisk(
         "津波浸水想定区域を確認できず",
 
       detail:
-        "この地点の津波浸水想定タイルには、浸水想定区域の着色データを確認できませんでした。津波リスクを完全に否定するものではないため、沿岸部では自治体の公式ハザードマップも確認してください。",
+        "公開されている津波浸水想定データでは、この地点付近に浸水想定区域の着色を確認できませんでした。津波リスクが完全にゼロであることを保証するものではありません。",
 
       status:"ok",
 
       raw:{
-        tileStatus:
-          "tile-missing",
-
-        tileUrl:
-          tile.url
+        tileStatus:"tile-missing",
+        tileUrl:tile.url
       }
 
     });
@@ -3277,14 +3275,10 @@ async function getTsunamiRisk(
 
 
   /*
-    404以外の通信エラー、
-    Canvasエラー、
-    ピクセル取得エラーは
-    安全側に倒して評価不能。
+    取得できなかった場合。
   */
   if(
-    tile.status !==
-    "ok"
+    tile.status !== "ok"
   ){
 
     return unavailableRisk(
@@ -3298,17 +3292,23 @@ async function getTsunamiRisk(
 
 
   /*
-    タイル取得成功。
-    周辺に実際の着色ピクセルが
-    存在するか確認。
+    有効なピクセルだけを取得。
   */
-  const visible =
-    hasVisibleHazardPixel(
-      tile.pixels
+  const visiblePixels =
+    tile.pixels.filter(
+      pixel =>
+        pixel &&
+        pixel.a > 20
     );
 
 
-  if(!visible){
+  /*
+    正常にタイルを取得したが
+    着色なし。
+  */
+  if(
+    visiblePixels.length === 0
+  ){
 
     return makeRiskResult({
 
@@ -3318,13 +3318,12 @@ async function getTsunamiRisk(
         "津波浸水想定区域を確認できず",
 
       detail:
-        "公開されている津波浸水想定データでは、この判定地点付近に津波浸水想定区域の着色を確認できませんでした。ただし、津波リスクが完全にゼロであることを保証するものではありません。",
+        "公式の津波浸水想定タイルを確認しましたが、この地点付近には浸水想定区域の着色を確認できませんでした。",
 
       status:"ok",
 
       raw:{
-        tileUrl:
-          tile.url
+        tileUrl:tile.url
       }
 
     });
@@ -3333,39 +3332,198 @@ async function getTsunamiRisk(
 
 
   /*
-    着色あり。
-    現段階では浸水深を
-    精密判定していないため、
-    区域内であることを中心に評価。
+    ----------------------------------------------------------
+    津波浸水深の色判定
+
+    ここでは取得した色を
+    浸水深クラスへ分類する。
+
+    最終的なRGB値は
+    公式凡例との照合を行う。
+    ----------------------------------------------------------
+  */
+
+  const TSUNAMI_COLORS=[
+
+    {
+      depth:"0.3m未満",
+      score:20,
+      r:255,
+      g:255,
+      b:179
+    },
+
+    {
+      depth:"0.3m以上～0.5m未満",
+      score:30,
+      r:255,
+      g:216,
+      b:192
+    },
+
+    {
+      depth:"0.5m以上～1m未満",
+      score:40,
+      r:255,
+      g:183,
+      b:183
+    },
+
+    {
+      depth:"1m以上～2m未満",
+      score:55,
+      r:255,
+      g:145,
+      b:145
+    },
+
+    {
+      depth:"2m以上～3m未満",
+      score:65,
+      r:242,
+      g:133,
+      b:201
+    },
+
+    {
+      depth:"3m以上～5m未満",
+      score:78,
+      r:220,
+      g:122,
+      b:220
+    },
+
+    {
+      depth:"5m以上～10m未満",
+      score:90,
+      r:145,
+      g:102,
+      b:224
+    },
+
+    {
+      depth:"10m以上",
+      score:100,
+      r:96,
+      g:80,
+      b:180
+    }
+
+  ];
+
+
+  /*
+    中心地点を優先。
+  */
+  const pixel =
+    centerPixel(
+      visiblePixels
+    ) ||
+    visiblePixels[0];
+
+
+  /*
+    最も近い凡例色を探す。
+  */
+  let best=null;
+
+  for(
+    const color
+    of TSUNAMI_COLORS
+  ){
+
+    const distance =
+      rgbDistance(
+        pixel,
+        color
+      );
+
+
+    if(
+      !best ||
+      distance < best.distance
+    ){
+
+      best={
+        ...color,
+        distance
+      };
+
+    }
+
+  }
+
+
+  /*
+    色が公式凡例から大きく離れている場合は
+    無理に浸水深を決めない。
+  */
+  if(
+    !best ||
+    best.distance > 70
+  ){
+
+    return makeRiskResult({
+
+      score:70,
+
+      label:
+        "津波浸水想定区域内",
+
+      detail:
+        "公式の津波浸水想定データで着色を確認しました。ただし浸水深区分を確実に特定できなかったため、区域内であることを中心に評価しています。",
+
+      status:"partial",
+
+      raw:{
+        pixel,
+        tileUrl:tile.url,
+        colorDistance:
+          best
+            ? best.distance
+            : null
+      }
+
+    });
+
+  }
+
+
+  /*
+    浸水深を判定できた場合。
   */
   return makeRiskResult({
 
-    score:75,
+    score:
+      best.score,
 
     label:
-      "津波浸水想定区域内",
+      "津波浸水想定 " +
+      best.depth,
 
     detail:
-      "公式の津波浸水想定公開データで、この判定地点付近に浸水想定区域の着色を確認しました。浸水深や避難場所については自治体の公式ハザードマップも確認してください。",
+      "公式の津波浸水想定タイルの着色から、判定地点付近は「" +
+      best.depth +
+      "」の浸水深区分として判定しました。",
 
-    status:"partial",
+    status:"ok",
 
     raw:{
+      depth:
+        best.depth,
 
-      pixel:
-        centerPixel(
-          tile.pixels
-        ),
+      pixel,
+
+      colorDistance:
+        best.distance,
 
       tileUrl:
         tile.url
-
     }
 
   });
 
 }
-
 
 
 /* ==========================================================
