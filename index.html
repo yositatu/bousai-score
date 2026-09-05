@@ -3111,51 +3111,57 @@ function tileErrorMessage(
 
    想定最大規模の公式公開タイルを使用。
 ========================================================== */
-
 async function getFloodRisk(
   lat,
   lon
 ){
 
+  /*
+    昨日正常動作していた方式を使用。
+    判定地点そのものの1ピクセルを取得し、
+    洪水タイルの色から浸水深を判定する。
+  */
+
   const tile =
-    await readTileNeighborhood(
-      HAZARD_TILES.flood,
+    HAZARD_TILES.flood;
+
+  const result =
+    await readTilePixel(
+      tile,
       lat,
       lon
     );
 
 
-  if(
-    tile.status !==
-    "ok"
-  ){
+  /*
+    タイル取得に失敗した場合は
+    安全扱いにしない。
+  */
+ if(
+  !result ||
+  result.status !== "ok" ||
+  !result.rgba
+){
 
     return unavailableRisk(
-      tileErrorMessage(
-        "洪水",
-        tile.status
-      )
+      "洪水の公式ハザードデータを取得できなかったため、評価不能としました。"
     );
 
   }
 
 
-  const visible =
-    hasVisibleHazardPixel(
-      tile.pixels
-    );
+  const pixel =
+  result.rgba;
 
 
   /*
-    正常にタイルを取得でき、
-    地点周辺が透明だった場合。
-
-    これは「絶対安全」ではなく、
-    この公開浸水想定タイル上で
-    浸水区域を確認できないという意味。
+    透明ピクセルなら、
+    この地点に洪水浸水想定の着色なし。
   */
-
-  if(!visible){
+  if(
+    !pixel ||
+    pixel.a < 20
+  ){
 
     return makeRiskResult({
 
@@ -3165,14 +3171,13 @@ async function getFloodRisk(
         "浸水想定区域を確認できず",
 
       detail:
-        "想定最大規模の洪水ハザード公開データでは、この判定地点付近に浸水想定の着色を確認できませんでした。ただし、洪水や内水氾濫などが絶対に起きないことを意味しません。",
+        "想定最大規模の洪水ハザード公開データでは、この判定地点に浸水想定の着色を確認できませんでした。",
 
-      status:
-        "ok",
+      status:"ok",
 
       raw:{
-        tileUrl:
-          tile.url
+        pixel,
+        tileUrl:result.url
       }
 
     });
@@ -3181,35 +3186,185 @@ async function getFloodRisk(
 
 
   /*
-    着色は確認できた。
-
-    深さの色区分を誤読して
-    架空の○mを表示しないため、
-    深さを確定できない場合でも
-    区域内であること自体を評価する。
+    昨日版で使用していた
+    洪水浸水深の代表色。
   */
+  const floodColors=[
 
+    {
+      r:255,
+      g:255,
+      b:179,
+      score:25,
+      depth:"0.3m未満"
+    },
+
+    {
+      r:247,
+      g:245,
+      b:169,
+      score:30,
+      depth:"0.3m～0.5m"
+    },
+
+    {
+      r:248,
+      g:225,
+      b:166,
+      score:40,
+      depth:"0.5m～1m"
+    },
+
+    {
+      r:255,
+      g:216,
+      b:192,
+      score:50,
+      depth:"1m～3m"
+    },
+
+    {
+      r:255,
+      g:183,
+      b:183,
+      score:65,
+      depth:"3m～5m"
+    },
+
+    {
+      r:255,
+      g:145,
+      b:145,
+      score:80,
+      depth:"5m～10m"
+    },
+
+    {
+      r:242,
+      g:133,
+      b:201,
+      score:90,
+      depth:"10m～20m"
+    },
+
+    {
+      r:220,
+      g:122,
+      b:220,
+      score:100,
+      depth:"20m以上"
+    }
+
+  ];
+
+
+  /*
+    取得したRGBと
+    一番近い代表色を探す。
+  */
+  let best=null;
+  let bestDistance=Infinity;
+
+
+  for(
+    const color
+    of floodColors
+  ){
+
+    const dr=
+      pixel.r-color.r;
+
+    const dg=
+      pixel.g-color.g;
+
+    const db=
+      pixel.b-color.b;
+
+
+    const distance=
+      Math.sqrt(
+        dr*dr+
+        dg*dg+
+        db*db
+      );
+
+
+    if(
+      distance <
+      bestDistance
+    ){
+
+      bestDistance=
+        distance;
+
+      best=
+        color;
+
+    }
+
+  }
+
+
+  /*
+    色が代表色から離れすぎている場合は、
+    勝手に浸水深を決めない。
+  */
+  if(
+    !best ||
+    bestDistance > 80
+  ){
+
+    return makeRiskResult({
+
+      score:15,
+
+      label:
+        "洪水データあり",
+
+      detail:
+        "洪水浸水想定の着色を確認しましたが、浸水深区分を確実に判定できませんでした。",
+
+      status:"partial",
+
+      raw:{
+        pixel,
+        colorDistance:
+          bestDistance,
+        tileUrl:
+          result.url
+      }
+
+    });
+
+  }
+
+
+  /*
+    RGBから浸水深を判定。
+  */
   return makeRiskResult({
 
-    score:65,
+    score:
+      best.score,
 
     label:
-      "浸水想定区域内",
+      "浸水想定 " +
+      best.depth,
 
     detail:
-      "想定最大規模の洪水ハザード公開データで、この判定地点付近に浸水想定区域の着色を確認しました。浸水深は公式ハザードマップでも確認してください。",
+      "洪水浸水想定区域 " +
+      best.depth,
 
-    status:
-      "partial",
+    status:"ok",
 
     raw:{
-      pixel:
-        centerPixel(
-          tile.pixels
-        ),
-
+      pixel,
+      depth:
+        best.depth,
+      colorDistance:
+        bestDistance,
       tileUrl:
-        tile.url
+        result.url
     }
 
   });
