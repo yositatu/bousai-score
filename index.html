@@ -2186,60 +2186,269 @@ function rgbDistance(
    「安全」にはせずエラーとして返す。
 ========================================================== */
 
-function loadHazardImage(url){
-
-  return new Promise(
-    resolve=>{
-
-      const image =
-        new Image();
+/* ==========================================================
+   ハザードタイル取得 改良版
+   洪水・津波・土砂災害 共通
+========================================================== */
 
 
-      image.crossOrigin =
-        "anonymous";
+/* ==========================================================
+   Blob画像を読み込む
+========================================================== */
 
+function blobToImage(blob){
 
-      image.onload =
-        ()=>{
+  return new Promise((resolve,reject)=>{
 
-          resolve({
+    const objectUrl=
+      URL.createObjectURL(blob);
 
-            status:
-              "ok",
+    const image=
+      new Image();
 
-            image
+    image.onload=()=>{
 
-          });
+      URL.revokeObjectURL(
+        objectUrl
+      );
 
-        };
+      resolve(image);
 
+    };
 
-      image.onerror =
-        ()=>{
+    image.onerror=()=>{
 
-          resolve({
+      URL.revokeObjectURL(
+        objectUrl
+      );
 
-            status:
-              "load-error",
+      reject(
+        new Error(
+          "画像データを読み込めませんでした"
+        )
+      );
 
-            image:null
+    };
 
-          });
+    image.src=
+      objectUrl;
 
-        };
-
-
-      image.src =
-        url;
-
-    }
-  );
+  });
 
 }
 
 
 /* ==========================================================
-   タイル1枚からRGBA取得
+   ハザードタイル取得
+
+   Imageタグで直接外部画像をCanvasへ
+   描画する方式をやめる。
+
+   fetch
+     ↓
+   Blob
+     ↓
+   同一オリジンのObjectURL
+     ↓
+   Canvas
+
+   の順で処理する。
+========================================================== */
+
+async function loadHazardImage(url){
+
+  let response;
+
+  try{
+
+    response=
+      await fetch(
+        url,
+        {
+          method:"GET",
+          mode:"cors",
+          cache:"no-store"
+        }
+      );
+
+  }catch(error){
+
+    return{
+
+      status:
+        "load-error",
+
+      image:null,
+
+      error
+
+    };
+
+  }
+
+
+  if(!response.ok){
+
+    return{
+
+      status:
+        "load-error",
+
+      image:null,
+
+      httpStatus:
+        response.status
+
+    };
+
+  }
+
+
+  let blob;
+
+  try{
+
+    blob=
+      await response.blob();
+
+  }catch(error){
+
+    return{
+
+      status:
+        "load-error",
+
+      image:null,
+
+      error
+
+    };
+
+  }
+
+
+  /*
+    HTMLなどが誤って返された場合を除外
+  */
+
+  if(
+    !blob ||
+    (
+      blob.type &&
+      !blob.type.startsWith("image/")
+    )
+  ){
+
+    return{
+
+      status:
+        "load-error",
+
+      image:null
+
+    };
+
+  }
+
+
+  try{
+
+    const image=
+      await blobToImage(
+        blob
+      );
+
+    return{
+
+      status:"ok",
+
+      image
+
+    };
+
+  }catch(error){
+
+    return{
+
+      status:
+        "load-error",
+
+      image:null,
+
+      error
+
+    };
+
+  }
+
+}
+
+
+/* ==========================================================
+   Canvas作成
+========================================================== */
+
+function createHazardCanvas(image){
+
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width=256;
+  canvas.height=256;
+
+
+  const context=
+    canvas.getContext(
+      "2d",
+      {
+        willReadFrequently:true
+      }
+    );
+
+
+  if(!context){
+
+    return null;
+
+  }
+
+
+  try{
+
+    context.clearRect(
+      0,
+      0,
+      256,
+      256
+    );
+
+    context.drawImage(
+      image,
+      0,
+      0,
+      256,
+      256
+    );
+
+  }catch(error){
+
+    return null;
+
+  }
+
+
+  return{
+    canvas,
+    context
+  };
+
+}
+
+
+/* ==========================================================
+   1ピクセル取得
 ========================================================== */
 
 async function readTilePixel(
@@ -2248,7 +2457,7 @@ async function readTilePixel(
   lon
 ){
 
-  const position =
+  const position=
     tilePosition(
       lat,
       lon,
@@ -2256,22 +2465,22 @@ async function readTilePixel(
     );
 
 
-  const url =
+  const url=
     buildTileUrl(
       config.template,
       position
     );
 
 
-  const loaded =
+  const loaded=
     await loadHazardImage(
       url
     );
 
 
   if(
-    loaded.status !==
-    "ok"
+    loaded.status!=="ok" ||
+    !loaded.image
   ){
 
     return{
@@ -2290,29 +2499,13 @@ async function readTilePixel(
   }
 
 
-  const canvas =
-    document.createElement(
-      "canvas"
+  const canvasData=
+    createHazardCanvas(
+      loaded.image
     );
 
 
-  canvas.width =
-    256;
-
-  canvas.height =
-    256;
-
-
-  const context =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently:true
-      }
-    );
-
-
-  if(!context){
+  if(!canvasData){
 
     return{
 
@@ -2332,42 +2525,27 @@ async function readTilePixel(
 
   try{
 
-    context.drawImage(
-      loaded.image,
-      0,
-      0,
-      256,
-      256
-    );
-
-
-    const data =
-      context.getImageData(
-        position.pixelX,
-        position.pixelY,
-        1,
-        1
-      ).data;
+    const data=
+      canvasData.context
+        .getImageData(
+          position.pixelX,
+          position.pixelY,
+          1,
+          1
+        )
+        .data;
 
 
     return{
 
-      status:
-        "ok",
+      status:"ok",
 
       rgba:{
 
-        r:
-          data[0],
-
-        g:
-          data[1],
-
-        b:
-          data[2],
-
-        a:
-          data[3]
+        r:data[0],
+        g:data[1],
+        b:data[2],
+        a:data[3]
 
       },
 
@@ -2376,7 +2554,6 @@ async function readTilePixel(
       position
 
     };
-
 
   }catch(error){
 
@@ -2403,11 +2580,9 @@ async function readTilePixel(
 /* ==========================================================
    周辺ピクセル取得
 
-   ハザード区域の境界線上で
-   1ピクセルだけを見ることによる
-   判定ブレを減らす。
-
-   中心＋周囲を確認する。
+   中心地点だけでは境界付近で
+   判定が不安定になるため、
+   中心＋周辺8点を確認する。
 ========================================================== */
 
 async function readTileNeighborhood(
@@ -2416,7 +2591,7 @@ async function readTileNeighborhood(
   lon
 ){
 
-  const position =
+  const position=
     tilePosition(
       lat,
       lon,
@@ -2424,22 +2599,22 @@ async function readTileNeighborhood(
     );
 
 
-  const url =
+  const url=
     buildTileUrl(
       config.template,
       position
     );
 
 
-  const loaded =
+  const loaded=
     await loadHazardImage(
       url
     );
 
 
   if(
-    loaded.status !==
-    "ok"
+    loaded.status!=="ok" ||
+    !loaded.image
   ){
 
     return{
@@ -2458,29 +2633,13 @@ async function readTileNeighborhood(
   }
 
 
-  const canvas =
-    document.createElement(
-      "canvas"
+  const canvasData=
+    createHazardCanvas(
+      loaded.image
     );
 
 
-  canvas.width =
-    256;
-
-  canvas.height =
-    256;
-
-
-  const context =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently:true
-      }
-    );
-
-
-  if(!context){
+  if(!canvasData){
 
     return{
 
@@ -2498,64 +2657,60 @@ async function readTileNeighborhood(
   }
 
 
+  /*
+    中心＋周囲8ピクセル。
+
+    17ズームでは非常に近い範囲なので
+    遠くの区域を拾いにくい。
+  */
+
+  const offsets=[
+
+    [0,0],
+
+    [-1,0],
+    [1,0],
+
+    [0,-1],
+    [0,1],
+
+    [-1,-1],
+    [1,-1],
+
+    [-1,1],
+    [1,1]
+
+  ];
+
+
+  const pixels=[];
+
+
   try{
-
-    context.drawImage(
-      loaded.image,
-      0,
-      0,
-      256,
-      256
-    );
-
-
-    /*
-      約数十m以内のごく近傍だけを見る。
-
-      大きく離れた場所の区域を
-      誤って拾わないよう
-      半径を小さくしている。
-    */
-
-    const offsets=[
-
-      [0,0],
-
-      [-1,0],
-      [1,0],
-      [0,-1],
-      [0,1],
-
-      [-1,-1],
-      [1,-1],
-      [-1,1],
-      [1,1]
-
-    ];
-
-
-    const pixels=[];
-
 
     for(
       const [dx,dy]
       of offsets
     ){
 
-      const px =
-        position.pixelX +
+      const x=
+        position.pixelX+
         dx;
 
-      const py =
-        position.pixelY +
+      const y=
+        position.pixelY+
         dy;
 
 
+      /*
+        タイル外には出ない
+      */
+
       if(
-        px<0 ||
-        px>255 ||
-        py<0 ||
-        py>255
+        x<0 ||
+        x>255 ||
+        y<0 ||
+        y>255
       ){
 
         continue;
@@ -2563,23 +2718,22 @@ async function readTileNeighborhood(
       }
 
 
-      const data =
-        context.getImageData(
-          px,
-          py,
-          1,
-          1
-        ).data;
+      const data=
+        canvasData.context
+          .getImageData(
+            x,
+            y,
+            1,
+            1
+          )
+          .data;
 
 
       pixels.push({
 
         r:data[0],
-
         g:data[1],
-
         b:data[2],
-
         a:data[3],
 
         dx,
@@ -2592,8 +2746,7 @@ async function readTileNeighborhood(
 
     return{
 
-      status:
-        "ok",
+      status:"ok",
 
       pixels,
 
@@ -2624,6 +2777,8 @@ async function readTileNeighborhood(
   }
 
 }
+
+
 
 
 /* ==========================================================
