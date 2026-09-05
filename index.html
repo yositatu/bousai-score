@@ -3239,6 +3239,49 @@ async function getTsunamiRisk(
     );
 
 
+  /*
+    タイルそのものが存在しない場合。
+
+    「取得エラー」と
+    「このXYZタイルに描画データが存在しない」
+    を区別する。
+  */
+  if(
+    tile.status ===
+    "tile-missing"
+  ){
+
+    return makeRiskResult({
+
+      score:5,
+
+      label:
+        "津波浸水想定区域を確認できず",
+
+      detail:
+        "この地点の津波浸水想定タイルには、浸水想定区域の着色データを確認できませんでした。津波リスクを完全に否定するものではないため、沿岸部では自治体の公式ハザードマップも確認してください。",
+
+      status:"ok",
+
+      raw:{
+        tileStatus:
+          "tile-missing",
+
+        tileUrl:
+          tile.url
+      }
+
+    });
+
+  }
+
+
+  /*
+    404以外の通信エラー、
+    Canvasエラー、
+    ピクセル取得エラーは
+    安全側に倒して評価不能。
+  */
   if(
     tile.status !==
     "ok"
@@ -3254,6 +3297,11 @@ async function getTsunamiRisk(
   }
 
 
+  /*
+    タイル取得成功。
+    周辺に実際の着色ピクセルが
+    存在するか確認。
+  */
   const visible =
     hasVisibleHazardPixel(
       tile.pixels
@@ -3267,13 +3315,12 @@ async function getTsunamiRisk(
       score:5,
 
       label:
-        "浸水想定区域を確認できず",
+        "津波浸水想定区域を確認できず",
 
       detail:
-        "公開されている津波浸水想定データでは、この判定地点付近に津波浸水想定の着色を確認できませんでした。ただし、津波が絶対に到達しないことを保証するものではありません。",
+        "公開されている津波浸水想定データでは、この判定地点付近に津波浸水想定区域の着色を確認できませんでした。ただし、津波リスクが完全にゼロであることを保証するものではありません。",
 
-      status:
-        "ok",
+      status:"ok",
 
       raw:{
         tileUrl:
@@ -3285,6 +3332,12 @@ async function getTsunamiRisk(
   }
 
 
+  /*
+    着色あり。
+    現段階では浸水深を
+    精密判定していないため、
+    区域内であることを中心に評価。
+  */
   return makeRiskResult({
 
     score:75,
@@ -3293,12 +3346,12 @@ async function getTsunamiRisk(
       "津波浸水想定区域内",
 
     detail:
-      "公式の津波浸水想定公開データで、この判定地点付近に浸水想定区域の着色を確認しました。津波時はスコアにかかわらず、自治体の避難情報に従い速やかに避難してください。",
+      "公式の津波浸水想定公開データで、この判定地点付近に浸水想定区域の着色を確認しました。浸水深や避難場所については自治体の公式ハザードマップも確認してください。",
 
-    status:
-      "partial",
+    status:"partial",
 
     raw:{
+
       pixel:
         centerPixel(
           tile.pixels
@@ -3306,11 +3359,13 @@ async function getTsunamiRisk(
 
       tileUrl:
         tile.url
+
     }
 
   });
 
 }
+
 
 
 /* ==========================================================
