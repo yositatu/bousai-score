@@ -3231,12 +3231,70 @@ async function getTsunamiRisk(
   lon
 ){
 
-  const tile =
-    await readTileNeighborhood(
-      HAZARD_TILES.tsunami,
-      lat,
-      lon
-    );
+    /*
+    津波タイル取得。
+
+    高解像度の z17 から順番に確認し、
+    取得できない場合は親ズームへ下げる。
+
+    最初に取得できたタイルを判定に使用する。
+  */
+  let tile = null;
+  let lastTile = null;
+
+  for(
+    const zoom of
+    [17,16,15,14,13,12,11,10,9,8]
+  ){
+
+    const config = {
+      ...HAZARD_TILES.tsunami,
+      zoom
+    };
+
+    const result =
+      await readTileNeighborhood(
+        config,
+        lat,
+        lon
+      );
+
+    lastTile = result;
+
+    if(
+      result.status === "ok"
+    ){
+      tile = result;
+      break;
+    }
+
+  }
+
+  /*
+    どのズームでも取得できなかった場合は、
+    通信失敗を安全扱いにはしない。
+  */
+  if(!tile){
+
+    if(
+      lastTile &&
+      lastTile.status === "tile-missing"
+    ){
+      tile = lastTile;
+    }else{
+
+      return unavailableRisk(
+        tileErrorMessage(
+          "津波",
+          lastTile
+            ? lastTile.status
+            : "load-error"
+        )
+      );
+
+    }
+
+  }
 
 
   /*
@@ -5468,7 +5526,7 @@ $("address")
         event.key ===
         "Enter"
       ){
-
+く
         event.preventDefault();
 
 
@@ -5478,7 +5536,7 @@ $("address")
 
           diagnose();
 
-        }
+        }く
 
       }
 
