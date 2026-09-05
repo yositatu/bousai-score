@@ -2456,76 +2456,70 @@ async function readTilePixel(
   lat,
   lon
 ){
-
-  const position=
+  const position =
     tilePosition(
       lat,
       lon,
       config.zoom
     );
 
-
-  const url=
+  const url =
     buildTileUrl(
       config.template,
       position
     );
 
-
-  const loaded=
+  const loaded =
     await loadHazardImage(
       url
     );
 
+  /*
+    タイル取得失敗。
 
+    404の場合と、
+    通信・CORS等の失敗を
+    呼び出し側で区別できるようにする。
+  */
   if(
-    loaded.status!=="ok" ||
+    loaded.status !== "ok" ||
     !loaded.image
   ){
-
     return{
-
       status:
-        "load-error",
+        loaded.httpStatus === 404
+          ? "tile-missing"
+          : "load-error",
+
+      httpStatus:
+        loaded.httpStatus || null,
 
       rgba:null,
-
       url,
+      position,
 
-      position
-
+      error:
+        loaded.error || null
     };
-
   }
 
-
-  const canvasData=
+  const canvasData =
     createHazardCanvas(
       loaded.image
     );
 
-
   if(!canvasData){
-
     return{
-
-      status:
-        "canvas-error",
-
+      status:"canvas-error",
+      httpStatus:null,
       rgba:null,
-
       url,
-
       position
-
     };
-
   }
 
-
   try{
-
-    const data=
+    const data =
       canvasData.context
         .getImageData(
           position.pixelX,
@@ -2535,45 +2529,32 @@ async function readTilePixel(
         )
         .data;
 
-
     return{
-
       status:"ok",
+      httpStatus:200,
 
       rgba:{
-
         r:data[0],
         g:data[1],
         b:data[2],
         a:data[3]
-
       },
 
       url,
-
       position
-
     };
 
   }catch(error){
 
     return{
-
-      status:
-        "pixel-read-error",
-
+      status:"pixel-read-error",
+      httpStatus:null,
       rgba:null,
-
       url,
-
       position,
-
       error
-
     };
-
   }
-
 }
 
 
@@ -3132,7 +3113,21 @@ async function getFloodRisk(
       lon
     );
 
-
+  if(
+    result &&
+    result.status === "tile-missing"
+  ){
+    return makeRiskResult({
+      score:5,
+      label:"浸水想定区域を確認できず",
+      detail:"想定最大規模の洪水ハザード公開データでは、この判定地点に浸水想定の着色データを確認できませんでした。ただし、洪水や内水氾濫などが絶対に起きないことを意味しません。",
+      status:"ok",
+      raw:{
+        httpStatus:result.httpStatus,
+        tileUrl:result.url
+      }
+    });
+  }
   /*
     タイル取得に失敗した場合は
     安全扱いにしない。
