@@ -2585,6 +2585,12 @@ async function readTilePixel(
    中心＋周辺8点を確認する。
 ========================================================== */
 
+
+/* ==========================================================
+   周辺ピクセル取得
+   404 / 取得失敗 / 正常取得を区別する
+========================================================== */
+
 async function readTileNeighborhood(
   config,
   lat,
@@ -2612,10 +2618,47 @@ async function readTileNeighborhood(
     );
 
 
+  /*
+    ----------------------------------------------------------
+    タイルが存在しない場合
+    ----------------------------------------------------------
+
+    ハザード系タイルでは、
+    対象地点に描画するデータがない場合に
+    PNG自体が存在しないケースがある。
+
+    ただし、この段階では
+    「安全」とは判定しない。
+
+    tile-missing として後段へ渡す。
+  */
+
   if(
     loaded.status!=="ok" ||
     !loaded.image
   ){
+
+    if(
+      loaded.httpStatus===404
+    ){
+
+      return{
+
+        status:
+          "tile-missing",
+
+        pixels:[],
+
+        httpStatus:404,
+
+        url,
+
+        position
+
+      };
+
+    }
+
 
     return{
 
@@ -2624,14 +2667,28 @@ async function readTileNeighborhood(
 
       pixels:[],
 
+      httpStatus:
+        loaded.httpStatus ||
+        null,
+
       url,
 
-      position
+      position,
+
+      error:
+        loaded.error ||
+        null
 
     };
 
   }
 
+
+  /*
+    ----------------------------------------------------------
+    Canvasへ描画
+    ----------------------------------------------------------
+  */
 
   const canvasData=
     createHazardCanvas(
@@ -2658,10 +2715,12 @@ async function readTileNeighborhood(
 
 
   /*
-    中心＋周囲8ピクセル。
+    ----------------------------------------------------------
+    判定地点の周辺を読む
 
-    17ズームでは非常に近い範囲なので
-    遠くの区域を拾いにくい。
+    中心だけでは境界線上で不安定になるため
+    周囲も確認する。
+    ----------------------------------------------------------
   */
 
   const offsets=[
@@ -2678,7 +2737,13 @@ async function readTileNeighborhood(
     [1,-1],
 
     [-1,1],
-    [1,1]
+    [1,1],
+
+    [-2,0],
+    [2,0],
+
+    [0,-2],
+    [0,2]
 
   ];
 
@@ -2703,7 +2768,7 @@ async function readTileNeighborhood(
 
 
       /*
-        タイル外には出ない
+        タイル範囲外は読まない
       */
 
       if(
@@ -2777,7 +2842,6 @@ async function readTileNeighborhood(
   }
 
 }
-
 
 
 
